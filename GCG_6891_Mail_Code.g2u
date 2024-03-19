@@ -1,0 +1,344 @@
+﻿Program.Sub.ScreenSU.Start
+Gui.frmMailCode..Create(BaseForm)
+Gui.frmMailCode..Caption("Mail Code")
+Gui.frmMailCode..Size(4110,2160)
+Gui.frmMailCode..MinX(0)
+Gui.frmMailCode..MinY(0)
+Gui.frmMailCode..Position(0,0)
+Gui.frmMailCode..AlwaysOnTop(False)
+Gui.frmMailCode..FontName("Tahoma")
+Gui.frmMailCode..FontSize(8.25)
+Gui.frmMailCode..ControlBox(True)
+Gui.frmMailCode..MaxButton(True)
+Gui.frmMailCode..MinButton(True)
+Gui.frmMailCode..MousePointer(0)
+Gui.frmMailCode..Moveable(True)
+Gui.frmMailCode..Sizeable(True)
+Gui.frmMailCode..ShowInTaskBar(True)
+Gui.frmMailCode..TitleBar(True)
+Gui.frmMailCode..Event(UnLoad,frmMailCode_UnLoad)
+Gui.frmMailCode.lblMailCode.Create(Label,"Mail Code",True,690,195,0,315,360,True,0,"Tahoma",8.25,,0,0)
+Gui.frmMailCode.lblMailCode.BorderStyle(0)
+Gui.frmMailCode.txtMailCode.Create(TextBox,"",True,1065,300,0,315,780,True,0,"Tahoma",8.25,,1)
+Gui.frmMailCode.txtMailCode.MaxLength(3)
+Gui.frmMailCode.txtMailCode.NumericOnly(2)
+Gui.frmMailCode.dtpSrvDate.Create(DatePicker)
+Gui.frmMailCode.dtpSrvDate.Enabled(True)
+Gui.frmMailCode.dtpSrvDate.Visible(True)
+Gui.frmMailCode.dtpSrvDate.Zorder(0)
+Gui.frmMailCode.dtpSrvDate.Size(1500,300)
+Gui.frmMailCode.dtpSrvDate.Position(1815,780)
+Gui.frmMailCode.dtpSrvDate.CheckBox(False)
+Gui.frmMailCode.dtpSrvDate.FontName("Tahoma")
+Gui.frmMailCode.dtpSrvDate.FontSize(8.25)
+Gui.frmMailCode.lblServDate.Create(Label,"Service Date",True,915,195,0,1815,360,True,0,"Tahoma",8.25,,0,0)
+Gui.frmMailCode.lblServDate.BorderStyle(0)
+Gui.frmMailCode.cmdSave.Create(Button)
+Gui.frmMailCode.cmdSave.Enabled(True)
+Gui.frmMailCode.cmdSave.Visible(True)
+Gui.frmMailCode.cmdSave.Zorder(0)
+Gui.frmMailCode.cmdSave.Size(1125,345)
+Gui.frmMailCode.cmdSave.Position(1380,1200)
+Gui.frmMailCode.cmdSave.Caption("Save")
+Gui.frmMailCode.cmdSave.FontName("Tahoma")
+Gui.frmMailCode.cmdSave.FontSize(8.25)
+Gui.frmMailCode.cmdSave.Event(Click,cmdSave_Click)
+Program.Sub.ScreenSU.End
+
+Program.Sub.Preflight.Start
+V.Global.bConOpen.Declare(Boolean, False)
+V.Global.sCalledFrom.Declare
+Program.Sub.Preflight.End
+
+Program.Sub.Main.Start
+F.Intrinsic.Control.Try
+'Brandon Medina 
+'Customer: Maryland Correctional Enterprises
+'Quote: 13575
+'Desc: FMIS Integration. This script adds a check to the invoice and invoice/accrual core screens to ensure users have entered a Mail code & Service Date before allowing them to save 
+	
+	F.Intrinsic.Control.SelectCase(V.Caller.Hook)
+	'Hooks are for AP > Trans > AP Batch Entry > New > Invoices
+		'Populate Hook
+		F.Intrinsic.Control.Case(35105)
+			'Change Script 1 Label 
+			V.Passed.000051.Set("Mail Code")
+		'Script 1 Hook
+		F.Intrinsic.Control.Case(35121)
+			F.Intrinsic.Control.CallSub(CheckMailCode, "sHookCalledFrom", "35121")
+			V.Global.sCalledFrom.Set("Invoice")
+			Gui.frmMailCode..Show
+		'Pre-save Hook 
+		F.Intrinsic.Control.Case(35110)
+			F.Intrinsic.Control.CallSub(CheckMailCode, "sHookCalledFrom", "35110")
+	'Hooks are for AP > Trans > AP Batch Entry > New > Invoices/Accruals > Ok 	
+		'Populate Hook
+		F.Intrinsic.Control.Case(33510)
+		'Change Script 1 Label 
+			V.Passed.000164.Set("Mail Code")
+		'Script 1 Hook
+		F.Intrinsic.Control.Case(33540)
+			F.Intrinsic.Control.CallSub(CheckMailCode, "sHookCalledFrom", "33540")
+			V.Global.sCalledFrom.Set("Accrual")
+			'Invoice: 000007
+			'Batch: 000001
+			'Vendor: 000051
+			Gui.frmMailCode..Show
+		'Pre-Save Hook
+		F.Intrinsic.Control.Case(33521)
+			F.Intrinsic.Control.CallSub(CheckMailCode, "sHookCalledFrom", "33521")
+			
+	F.Intrinsic.Control.EndSelect
+F.Intrinsic.Control.Catch
+	F.Intrinsic.Control.CallSub(ErrorMsg, CurrentSub, v.Ambient.CurrentSubroutine)
+F.Intrinsic.Control.EndTry
+Program.Sub.Main.End
+
+Program.Sub.ErrorMsg.Start
+V.Local.sError.Declare
+
+'F.Intrinsic.Control.If(V.Global.bConOpen)
+'	F.ODBC.Connection!con.Close
+'	V.Global.bConOpen.Set(False)
+'F.Intrinsic.Control.EndIf	
+
+'Generic Error message.
+f.Intrinsic.String.Build("Project GCG_6891_Mail_Code.g2u {0}{0}Subroutine: {1}{0}Error: {2} with Description: {3}", v.Ambient.NewLine, v.Args.CurrentSub, v.Ambient.ErrorNumber, v.Ambient.ErrorDescription, v.Local.sError)
+f.Intrinsic.UI.Msgbox(v.Local.sError)
+Program.Sub.ErrorMsg.End
+
+Program.Sub.frmMailCode_UnLoad.Start
+F.Intrinsic.Control.Try
+	F.Intrinsic.Control.End
+F.Intrinsic.Control.Catch
+	F.Intrinsic.Control.CallSub(ErrorMsg, CurrentSub, v.Ambient.CurrentSubroutine)
+F.Intrinsic.Control.EndTry
+Program.Sub.frmMailCode_UnLoad.End
+Program.Sub.cmdSave_Click.Start
+F.Intrinsic.Control.Try
+	V.Local.sSQL.Declare
+	V.Local.sFedID.Declare
+	V.Local.sServiceDate.Declare
+	V.Local.dServiceDate.Declare
+	V.Local.sMailCode.Declare
+	V.Local.sInvoice.Declare
+	V.Local.sBatch.Declare
+	V.Local.sVendor.Declare
+	V.Local.bEnd.Declare
+	V.Local.sFedIDDecrypt.Declare
+	
+	'Invoice Screen 
+		'Invoice: 000018
+		'Batch:000007
+		'Vendor: 000002
+	'Invoice/Accrual Screen 
+		'Invoice: 000007
+		'Batch: 000001
+		'Vendor: 000051
+	F.Intrinsic.Control.If(V.Global.sCalledFrom, =, "Invoice")
+		V.Local.sInvoice.Set(V.Passed.000018)
+		V.Local.sBatch.Set(V.Passed.000007)
+		V.Local.sVendor.Set(V.Passed.000002)
+	F.Intrinsic.Control.ElseIf(V.Global.sCalledFrom, =, "Accrual")
+		V.Local.sInvoice.Set(V.Passed.000007)
+		V.Local.sBatch.Set(V.Passed.000001)
+		V.Local.sVendor.Set(V.Passed.000051)
+	F.Intrinsic.Control.EndIf
+	
+
+	F.Intrinsic.Control.If(V.Local.sInvoice, =, "")
+		V.Local.bEnd.Set(True)
+	F.Intrinsic.Control.ElseIf(V.Local.sBatch, =, "")
+		V.Local.bEnd.Set(True)
+	F.Intrinsic.Control.ElseIf(V.Local.sVendor, =, "")
+		V.Local.bEnd.Set(True)
+	F.Intrinsic.Control.EndIf
+	
+	F.Intrinsic.Control.If(V.Local.bEnd)
+		F.Intrinsic.UI.Msgbox("Please go back to previous screen and ensure that invoice, batch, and vendor is filled out")
+		F.Intrinsic.Control.ExitSub
+	F.Intrinsic.Control.EndIf
+	
+	
+	'Create table
+	F.Intrinsic.Control.CallSub(CreateTable)
+	
+	'From vendor num on screen, get fed ID 
+	F.ODBC.Connection!con.OpenCompanyConnection
+	V.Global.bConOpen.Set(True)
+	F.Intrinsic.String.Build("select VENDOR_ID, FEDERAL_ID_ENC from VENDOR_ENCRYPT where ltrim(rtrim(VENDOR_ID)) = '{0}'", V.Local.sVendor.Trim, V.Local.sSQL)
+	
+	
+	F.Intrinsic.Control.If(V.DataTable.dtFedID.Exists)
+		F.Data.DataTable.Close("dtFedID")
+	F.Intrinsic.Control.EndIf
+	F.Data.DataTable.CreateFromSQL("dtFedID", "con", V.Local.sSQL)
+	F.Data.DataTable.AddColumn("dtFedID", "GSS_BATCH", "String")
+	F.Data.DataTable.AddColumn("dtFedID", "INVOICE_NO", "String")
+	F.Data.DataTable.AddColumn("dtFedID", "MAIL_CODE", "String")
+	F.Data.DataTable.AddColumn("dtFedID", "SERV_DATE", "Date")
+	F.Data.DataTable.AddColumn("dtFedID", "FED_ID", "String")
+	
+	F.Intrinsic.Control.If(V.Global.bConOpen)
+		F.ODBC.Connection!con.Close
+		V.Global.bConOpen.Set(False)
+	F.Intrinsic.Control.EndIf
+	
+	
+	'Grab service date, mail code and fed id from screens and write record to custom table 
+	F.Global.Encryption.Decrypt(V.DataTable.dtFedID(0).FEDERAL_ID_ENC!FieldVal, V.Local.sFedID)
+	'V.Local.sFedID.Set(V.Local.sFedID.Trim)
+	V.Local.sFedIDDecrypt.Set(V.Local.sFedID.Trim)
+	V.Local.sServiceDate.Set(V.Screen.frmMailCode!dtpSrvDate.Text)
+	F.Intrinsic.String.Format(V.Local.sServiceDate, "YYYY-MM-DD", V.Local.sServiceDate)
+	'F.Intrinsic.String.Format(V.Local.sServiceDate, "YYYY-MM-DD", V.Local.dServiceDate)
+	V.Local.sMailCode.Set(V.Screen.frmMailCode!txtMailCode.Text)
+	'Check that the length is 3
+	F.Intrinsic.Control.If(V.Local.sMailCode.Length, <>, 3)
+		F.Intrinsic.UI.Msgbox("Mail Code must be 3 digits long")
+		F.Intrinsic.Control.ExitSub
+	F.Intrinsic.Control.EndIf
+	
+	F.Intrinsic.Control.If(V.Local.sInvoice.Length, >, 14)
+		F.Intrinsic.UI.Msgbox("Invoice Number is too long. Please ensure it is less than or equal to 14 characters")
+		F.Intrinsic.Control.ExitSub
+	F.Intrinsic.Control.EndIf
+	
+	F.Data.DataTable.SetValue("dtFedID", 0, "GSS_BATCH", V.Local.sBatch, "INVOICE_NO", V.Local.sInvoice, "FED_ID", V.Local.sFedIDDecrypt, "MAIL_CODE", V.Local.sMailCode, "SERV_DATE", V.Local.sServiceDate)
+	
+	F.ODBC.Connection!conx.OpenCommonConnection
+	V.Global.bConOpen.Set(True)
+	F.Data.DataTable.SaveToDB("dtFedID", "conx", "GCG_6891_MAIL_CODE", "GSS_BATCH*!*INVOICE_NO", 256, "GSS_BATCH@!@GSS_BATCH*!*INVOICE_NO@!@INVOICE_NO*!*FED_ID@!@VEND_FED_ID*!*MAIL_CODE@!@MAIL_CODE*!*SERV_DATE@!@SERV_DATE")
+	
+	F.Intrinsic.Control.If(V.Global.bConOpen)
+		F.ODBC.Connection!conx.Close
+		V.Global.bConOpen.Set(False)
+	F.Intrinsic.Control.EndIf
+	
+	'Enable Save Button 
+	'relate vendor to vend fed ID 
+	F.Intrinsic.UI.Msgbox("Mail Code Successfully Saved")
+	F.Intrinsic.Control.End
+	
+F.Intrinsic.Control.Catch
+	F.Intrinsic.Control.CallSub(ErrorMsg, CurrentSub, V.Ambient.CurrentSubroutine)
+	F.Intrinsic.Control.End
+F.Intrinsic.Control.EndTry
+Program.Sub.cmdSave_Click.End
+
+Program.Sub.CheckMailCode.Start
+F.Intrinsic.Control.Try
+	'Invoice Screeen
+		'Invoice: 000018
+		'Batch:000007
+		'Vendor: 000002
+	'Invoice Accrual Screen 
+		'Invoice: 000007
+		'Batch: 000001
+		'Vendor: 000051
+	V.Local.sSQL.Declare
+	V.Local.sInvoice.Declare
+	V.Local.sBatch.Declare
+	V.Local.sVendor.Declare
+	V.Local.bEnd.Declare
+	V.Local.sRecCnt.Declare
+	V.Local.sMailCode.Declare
+	V.Local.sServDate.Declare
+	V.Local.sRet.Declare
+	
+	F.Intrinsic.Control.If(V.Args.sHookCalledFrom, =, "35121", OR, V.Args.sHookCalledFrom, =, "35110")
+		V.Local.sInvoice.Set(V.Passed.000018.Trim)
+		V.Local.sBatch.Set(V.Passed.000007.Trim)
+		V.Local.sVendor.Set(V.Passed.000002.Trim)
+	F.Intrinsic.Control.Else
+		V.Local.sInvoice.Set(V.Passed.000007.Trim)
+		V.Local.sBatch.Set(V.Passed.000001.Trim)
+		V.Local.sVendor.Set(V.Passed.000051.Trim)
+	F.Intrinsic.Control.EndIf
+	
+	
+	F.Intrinsic.Control.If(V.Local.sInvoice, =, "")
+		V.Local.bEnd.Set(True)
+	F.Intrinsic.Control.ElseIf(V.Local.sBatch, =, "")
+		V.Local.bEnd.Set(True)
+	F.Intrinsic.Control.ElseIf(V.Local.sVendor, =, "")
+		V.Local.bEnd.Set(True)
+	F.Intrinsic.Control.EndIf
+	
+	'Find how many records are returned
+	
+	F.Intrinsic.String.Build("select count(*) from GCG_6891_MAIL_CODE where GSS_BATCH = '{0}' and INVOICE_NO = '{1}'", V.Local.sBatch, V.Local.sInvoice, V.Local.sSQL)
+	F.ODBC.Connection!con.OpenCommonConnection
+	V.Global.bConOpen.Set(True)
+	F.ODBC.Connection!con.ExecuteAndReturn(V.Local.sSQL, V.Local.sRecCnt)
+	'Get actual data for populating form if it's already been filled out
+	F.Intrinsic.String.Build("select MAIL_CODE, SERV_DATE from GCG_6891_MAIL_CODE where GSS_BATCH = '{0}' and INVOICE_NO = '{1}'", V.Local.sBatch, V.Local.sInvoice, V.Local.sSQL)
+	F.ODBC.Connection!con.ExecuteAndReturn(V.Local.sSQL, V.Local.sRet)
+	F.Intrinsic.Control.If(V.Global.bConOpen)
+		F.ODBC.Connection!con.Close
+		V.Global.bConOpen.Set(False)
+	F.Intrinsic.Control.EndIf
+	
+	F.Intrinsic.String.Split(V.Local.sRet, "*!*", V.Local.sRet)
+	V.Local.sMailCode.Set(V.Local.sRet(0))
+	V.Local.sServDate.Set(V.Local.sRet(1))
+	V.Local.sServDate.Set(V.Local.sServDate.FormatMM/DD/YYYY)
+	
+	'Populates form
+	F.Intrinsic.Control.If(V.Args.sHookCalledFrom, =, "35121", OR, V.Args.sHookCalledFrom, =, "33540")
+		F.Intrinsic.Control.If(V.Local.sRecCnt, =, 1)
+			Gui.frmMailCode.txtMailCode.Text(V.Local.sMailCode)
+			Gui.frmMailCode.dtpSrvDate.Text(V.Local.sServDate)
+			F.Intrinsic.Control.ExitSub
+		F.Intrinsic.Control.ElseIf(V.Local.sRecCnt, >, 1)
+			F.Intrinsic.UI.Msgbox("More than one mail code and service date record exists for the given batch and invoice number. Please correct table GCG_6891_MAIL_CODE.", "Too Many Records")
+			F.Intrinsic.Control.End
+		F.Intrinsic.Control.Else
+			F.Intrinsic.Control.ExitSub
+		F.Intrinsic.Control.EndIf
+	'Checks when saving 
+	F.Intrinsic.Control.ElseIf(V.Args.sHookCalledFrom, =, "35110", OR, V.Args.sHookCalledFrom, =, "33521")
+		F.Intrinsic.Control.If(V.Local.sRecCnt, =, 0)
+			F.Intrinsic.UI.Msgbox("Please enter a mail code and service date for the given batch and invoice number", "Missing Information")
+			V.Passed.777777.Set(1)
+			F.Intrinsic.Control.End
+		F.Intrinsic.Control.ElseIf(V.Local.sRecCnt, >, 1)
+			F.Intrinsic.UI.Msgbox("More than one mail code and service date record exists for the given batch and invoice number. Please correct table GCG_6891_MAIL_CODE.", "Too Many Records")
+			V.Passed.777777.Set(1)
+			F.Intrinsic.Control.End
+		F.Intrinsic.Control.EndIf
+	F.Intrinsic.Control.EndIf
+	
+F.Intrinsic.Control.Catch
+	F.Intrinsic.Control.CallSub(ErrorMsg, CurrentSub, V.Ambient.CurrentSubroutine)
+F.Intrinsic.Control.EndTry
+Program.Sub.CheckMailCode.End
+
+Program.Sub.CreateTable.Start
+F.Intrinsic.Control.Try
+	V.Local.bTableExists.Declare
+	V.Local.sSQL.Declare
+	
+	F.ODBC.Connection!con.OpenCommonConnection
+	V.Global.bConOpen.Set(True)
+	
+	F.ODBC.Connection!con.TableExists("GCG_6891_MAIL_CODE", V.Local.bTableExists)
+	F.Intrinsic.Control.If(V.Local.bTableExists.Not)
+		F.ODBC.Connection!con.Execute("create table GCG_6891_MAIL_CODE (GSS_BATCH CHAR(5), INVOICE_NO CHAR(14), VEND_FED_ID CHAR(11), MAIL_CODE CHAR(3), SERV_DATE DATE)")
+	F.Intrinsic.Control.EndIf
+
+	F.Intrinsic.Control.If(V.Global.bConOpen)
+		F.ODBC.Connection!con.Close
+		V.Global.bConOpen.Set(False)
+	F.Intrinsic.Control.EndIf
+	
+	
+F.Intrinsic.Control.Catch
+	F.Intrinsic.Control.CallSub(ErrorMsg, CurrentSub, V.Ambient.CurrentSubroutine)
+F.Intrinsic.Control.EndTry
+Program.Sub.CreateTable.End
+
+Program.Sub.Comments.Start
+${$5$}$20.1.8286.22461$}$1
+${$6$}$bmedina$}$20230223132026404$}$kOipCrsyLBVj2KoSwkcdK23ChxGVcBlEJWW94WSAxFhAUkq7nyEg2/by6rRcJypa5J2TWlMTH+4=
+Program.Sub.Comments.End
