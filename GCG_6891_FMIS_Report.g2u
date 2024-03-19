@@ -1,0 +1,267 @@
+﻿Program.Sub.ScreenSU.Start
+Gui.frmFMISBatch..Create(BaseForm)
+Gui.frmFMISBatch..Caption("FMIS Batch Report")
+Gui.frmFMISBatch..Size(5535,2535)
+Gui.frmFMISBatch..MinX(0)
+Gui.frmFMISBatch..MinY(0)
+Gui.frmFMISBatch..Position(0,0)
+Gui.frmFMISBatch..AlwaysOnTop(False)
+Gui.frmFMISBatch..FontName("Tahoma")
+Gui.frmFMISBatch..FontSize(8.25)
+Gui.frmFMISBatch..ControlBox(True)
+Gui.frmFMISBatch..MaxButton(True)
+Gui.frmFMISBatch..MinButton(True)
+Gui.frmFMISBatch..MousePointer(0)
+Gui.frmFMISBatch..Moveable(True)
+Gui.frmFMISBatch..Sizeable(True)
+Gui.frmFMISBatch..ShowInTaskBar(True)
+Gui.frmFMISBatch..TitleBar(True)
+Gui.frmFMISBatch..Event(UnLoad,frmFMISBatch_UnLoad)
+Gui.frmFMISBatch.lblStartDate.Create(Label,"Beginning Post Date",True,1440,195,0,825,240,True,0,"Tahoma",8.25,,0,0)
+Gui.frmFMISBatch.lblStartDate.BorderStyle(0)
+Gui.frmFMISBatch.lblEndDate.Create(Label,"Ending Post Date",True,1230,195,0,3225,240,True,0,"Tahoma",8.25,,0,0)
+Gui.frmFMISBatch.lblEndDate.BorderStyle(0)
+Gui.frmFMISBatch.lblEndDate.Anchor(9)
+Gui.frmFMISBatch.dtpStartDate.Create(DatePicker)
+Gui.frmFMISBatch.dtpStartDate.Enabled(True)
+Gui.frmFMISBatch.dtpStartDate.Visible(True)
+Gui.frmFMISBatch.dtpStartDate.Zorder(0)
+Gui.frmFMISBatch.dtpStartDate.Size(1500,300)
+Gui.frmFMISBatch.dtpStartDate.Position(825,600)
+Gui.frmFMISBatch.dtpStartDate.CheckBox(False)
+Gui.frmFMISBatch.dtpStartDate.FontName("Tahoma")
+Gui.frmFMISBatch.dtpStartDate.FontSize(8.25)
+Gui.frmFMISBatch.dtpEndDate.Create(DatePicker)
+Gui.frmFMISBatch.dtpEndDate.Enabled(True)
+Gui.frmFMISBatch.dtpEndDate.Visible(True)
+Gui.frmFMISBatch.dtpEndDate.Zorder(0)
+Gui.frmFMISBatch.dtpEndDate.Size(1500,300)
+Gui.frmFMISBatch.dtpEndDate.Position(3225,600)
+Gui.frmFMISBatch.dtpEndDate.CheckBox(False)
+Gui.frmFMISBatch.dtpEndDate.FontName("Tahoma")
+Gui.frmFMISBatch.dtpEndDate.FontSize(8.25)
+Gui.frmFMISBatch.dtpEndDate.Anchor(9)
+Gui.frmFMISBatch.cmdRun.Create(Button)
+Gui.frmFMISBatch.cmdRun.Enabled(True)
+Gui.frmFMISBatch.cmdRun.Visible(True)
+Gui.frmFMISBatch.cmdRun.Zorder(0)
+Gui.frmFMISBatch.cmdRun.Size(1125,345)
+Gui.frmFMISBatch.cmdRun.Position(2235,1425)
+Gui.frmFMISBatch.cmdRun.Caption("Run")
+Gui.frmFMISBatch.cmdRun.FontName("Tahoma")
+Gui.frmFMISBatch.cmdRun.FontSize(8.25)
+Gui.frmFMISBatch.cmdRun.Anchor(2)
+Gui.frmFMISBatch.cmdRun.Event(Click,cmdRun_Click)
+Program.Sub.ScreenSU.End
+
+Program.Sub.Preflight.Start
+V.Global.dStart.Declare
+V.Global.dEnd.Declare
+Program.Sub.Preflight.End
+
+Program.Sub.Main.Start
+'Brandon Medina 
+'Customer: Maryland Correctional Enterprises
+'Quote: 14438-0
+'Desc: This is an addition to the original project with quote 13575-0. 
+F.Intrinsic.Control.Try
+	F.Intrinsic.Control.CallSub(CreateDBTable)
+	Gui.frmFMISBatch..Show()
+	
+	
+	
+F.Intrinsic.Control.Catch
+	F.Intrinsic.Control.CallSub(ErrorMsg, CurrentSub, v.Ambient.CurrentSubroutine)
+F.Intrinsic.Control.EndTry
+Program.Sub.Main.End
+
+Program.Sub.ErrorMsg.Start
+V.Local.sError.Declare
+
+'Generic Error message.
+F.Intrinsic.UI.CloseWaitDialog()
+F.Intrinsic.String.Build("Project: {0}{1}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}{1}GAB Version: {5}",V.Caller.ScriptFile , V.Ambient.Newline, V.Args.CurrentSub,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError)
+f.Intrinsic.UI.Msgbox(v.Local.sError)
+Program.Sub.ErrorMsg.End
+Program.Sub.BuildBITable.Start
+F.Intrinsic.Control.Try
+	V.Local.sSQL.Declare
+	V.Local.sCompanies.Declare
+	V.Local.iCompanyCnt.Declare
+	V.Local.sSubDTNameA.Declare
+	V.Local.sSubDTNameB.Declare
+	V.Local.sTrmnl.Declare
+	V.Local.lRPTID.Declare
+	V.Local.sParams.Declare
+	V.Local.sValues.Declare
+	V.Local.sSQLStart.Declare
+	V.Local.sSQLEnd.Declare
+	V.Local.sFilter.Declare
+	V.Local.sFormatStart.Declare
+	V.Local.sFormatEnd.Declare
+	
+
+	F.Intrinsic.UI.InvokeWaitDialog("Populating BI Table...", "Please Wait")
+	'First Format Dates as PSQL expects 
+	F.Intrinsic.String.Format(V.Global.dStart, "YYYY-MM-DD", V.Local.sSQLStart)
+	F.Intrinsic.String.Format(V.Global.dEnd, "YYYY-MM-DD", V.Local.sSQLEnd)
+	
+	F.Global.BI.GetIDFromName("GCG_6891_FMIS.rpt", V.Local.lRPTID)
+	
+	F.Intrinsic.Control.If(V.DataTable.dtQueryCustom.Exists)
+		F.Data.DataTable.Close("dtQueryCustom")
+	F.Intrinsic.Control.EndIf
+	
+	F.Intrinsic.Control.If(V.DataTable.dtCoreData.Exists)
+		F.Data.DataTable.Close("dtCoreData")
+	F.Intrinsic.Control.EndIf
+	
+	F.Intrinsic.Control.If(V.DataTable.dtReportTable.Exists)
+		F.Data.DataTable.Close("dtReportTable")
+	F.Intrinsic.Control.EndIf
+	
+	'Now Query tables A & B, which are company code specific. Post amount needs to include negative values that are in the batch, but didn't make it to the custom table C.
+	'Their AS400 mainframe payment system does not allow for negative values. 
+	'A: GL_AP_DETAIL
+	'B: AP_INV_TAX_DTL
+	'C: GCG_6891_BATCHES
+	
+	'Grab all company codes on the server, create data table set from each, combine and send the final result to dtDataAll1
+	F.ODBC.Connection!conx.OpenCommonConnection
+	'Only build data from live codes, all start w/ the letter M. Exclude company M02
+	F.ODBC.Connection!conx.ExecuteAndReturn("select COCODE from COMPANIES where COCODE not in ('M02', 'M16', 'M22', 'M29', 'MCC', 'MCE', 'MET') and left(COCODE, 1) = 'M'", V.Local.sCompanies)
+	F.ODBC.Connection!conx.Close
+	F.Intrinsic.String.Split(V.Local.sCompanies, "#$#", V.Local.sCompanies)
+	
+	F.ODBC.Connection!con.OpenCompanyConnection
+	
+	F.Intrinsic.Control.For(V.Local.iCompanyCnt, 0, V.Local.sCompanies.UBound, 1)
+		F.Intrinsic.String.Build("GLOBAL{0}A", V.Local.sCompanies(V.Local.iCompanyCnt), V.Local.sSubDTNameA)
+		F.Intrinsic.String.Build("GLOBAL{0}B", V.Local.sCompanies(V.Local.iCompanyCnt), V.Local.sSubDTNameB)
+		
+		'This contains Invoice Batches for given dates. Need to group by invoice number & batch in order to combine all lines into one record
+		F.Intrinsic.String.Build("select '{0}' as COMPANY_CODE, ltrim(rtrim(A.BATCH)) as GSS_BATCH, ltrim(rtrim(A.INVOICE_NO)) as INVOICE, SUM(A.AMOUNT_CMPNY) as INVOICE_AMT from GLOBAL{0}.GL_AP_DETAIL A where A.AP_CODE in ('10', '12', '13') and A.GL_NUMBER <> '60000' and A.GL_NUMBER <> '60001' and left(A.BATCH, 1) <> 'P' and left(A.VENDOR, 1) <> 'Z' group by GSS_BATCH, INVOICE_NO", V.Local.sCompanies(V.Local.iCompanyCnt), V.Local.sSQL)
+		F.Data.DataTable.CreateFromSQL(V.Local.sSubDTNameA, "con", V.Local.sSQL, True)
+		'This contains Invoice Accrual Batches for given dates
+		F.Intrinsic.String.Build("select '{0}' as COMPANY_CODE, ltrim(rtrim(B.BATCH_NUM)) as GSS_BATCH, ltrim(rtrim(B.INVOICE)) as INVOICE, SUM(B.COST_INVOICED) as INVOICE_AMT from GLOBAL{0}.AP_INV_TAX_DTL B where left(B.BATCH_NUM, 1) = 'P' and left(B.VENDOR_ID, 1) <> 'Z' group by BATCH_NUM, INVOICE", V.Local.sCompanies(V.Local.iCompanyCnt), V.Global.dStart, V.Global.dEnd, V.Local.sSQL)
+		F.Data.DataTable.CreateFromSQL(V.Local.sSubDTNameB, "con", V.Local.sSQL, True)
+		
+		F.Data.DataTable.Merge(V.Local.sSubDTNameA, V.Local.sSubDTNameB, True, 1)
+		'Send result to dtCoreData
+		F.Intrinsic.Control.If(V.DataTable.dtCoreData.Exists, =, False)
+			F.Data.DataTable.Clone(V.Local.sSubDTNameB, "dtCoreData", True)
+		F.Intrinsic.Control.EndIf
+		
+		F.Data.DataTable.Merge(V.Local.sSubDTNameB, "dtCoreData", True, 1)
+		
+		F.Data.DataTable.Close(V.Local.sSubDTNameA)
+		F.Data.DataTable.Close(V.Local.sSubDTNameB)
+	F.Intrinsic.Control.Next(V.Local.iCompanyCnt)
+	
+	F.ODBC.Connection!con.Close
+	
+		
+	F.ODBC.Connection!conx.OpenCommonConnection
+	F.Intrinsic.String.Build("select distinct(ltrim(rtrim(INVOICE_NO))) as INVOICE_NO, FMIS_BATCH, COMP_CODE, POST_DATE from GCG_6891_BATCHES where POST_DATE between '{0}' and '{1}' order by FMIS_BATCH", V.Local.sSQLStart, V.Local.sSQLEnd, V.Local.sSQL)
+	F.Data.DataTable.CreateFromSQL("dtQueryCustom", "conx", V.Local.sSQL, True)
+	F.ODBC.Connection!conx.Close
+
+	
+	'Now Linq Left Join dtCoreData to dtQueryCustom to now show the result. Invoice numbers are unique across company codes
+	F.Data.Linq.Join(V.Enum.LinqJoinType!InnerJoin, V.Enum.LinqSourceType!DataTable, "dtQueryCustom*!*QC", V.Enum.LinqSourceType!DataTable, "dtCoreData*!*CD", "QC.INVOICE_NO = CD.INVOICE", "QC.COMP_CODE*!*CD.GSS_BATCH*!*CD.INVOICE*!*QC.FMIS_BATCH*!*SUM(CD.INVOICE_AMT) as INVOICE_AMT*!*QC.POST_DATE*!*Count() as TOTALCOUNT", , "QC.COMP_CODE,QC.FMIS_BATCH,CD.GSS_BATCH,CD.INVOICE,QC.POST_DATE", "QC.COMP_CODE", "dtReportTable", True)
+	
+	'"GSS_BATCH <> ''"
+	'Save to custom BI. First add in RPTID & TRML
+	F.Data.DataTable.AddColumn("dtReportTable", "TRMNL", "String", V.Caller.Terminal)
+	F.Data.DataTable.AddColumn("dtReportTable", "RPTID", "String", V.Local.lRPTID)
+	
+	'F.Global.General.OverrideCompany("M01")
+	F.Intrinsic.String.Build("delete from GCG_6891_BI_FMIS where TRMNL = '{0}' and RPTID = '{1}'", V.Caller.Terminal, V.Local.lRPTID, V.Local.sSQL)
+	F.ODBC.Connection!con.OpenCompanyConnection
+	F.ODBC.Connection!con.Execute(V.Local.sSQL)
+	
+	
+	F.Data.DataTable.SaveToDB("dtReportTable", "con", "GCG_6891_BI_FMIS", "TRMNL*!*RPTID*!*INVOICE*!*GSS_BATCH*!*FMIS_BATCH", 256, "TRMNL@!@TRMNL*!*RPTID@!@RPTID*!*COMP_CODE@!@COMP_CODE*!*GSS_BATCH@!@GSS_BATCH*!*INVOICE@!@INVOICE*!*FMIS_BATCH@!@FMIS_BATCH*!*POST_DATE@!@POST_DATE*!*INVOICE_AMT@!@POST_AMT")
+	
+	
+	F.ODBC.Connection!con.Close
+	
+
+	F.Intrinsic.UI.CloseWaitDialog()
+
+	
+	V.Local.sParams.Set("TRMNL!*!RPTID!*!Start_Date!*!End_Date")
+	F.Intrinsic.String.Split(V.Local.sParams, "!*!", V.Local.sParams)
+	F.Intrinsic.String.Format(V.Global.dStart, "MM/DD/YYYY", V.Local.sFormatStart)
+	F.Intrinsic.String.Format(V.Global.dEnd, "MM/DD/YYYY", V.Local.sFormatEnd)
+	F.Intrinsic.String.Build("{0}*!*{1}*!*{2}*!*{3}", V.Caller.Terminal, V.Local.lRPTID, V.Local.sFormatStart, V.Local.sFormatEnd, V.Local.sValues)
+	F.Intrinsic.String.Split(V.Local.sValues, "*!*", V.Local.sValues)
+	F.Global.BI.PrintReport(V.Local.lRPTID, 16, V.Local.sParams, V.Local.sValues, "", False)
+	
+F.Intrinsic.Control.Catch
+	F.Intrinsic.Control.CallSub(ErrorMsg, CurrentSub, v.Ambient.CurrentSubroutine)
+F.Intrinsic.Control.EndTry
+Program.Sub.BuildBITable.End
+Program.Sub.frmFMISBatch_UnLoad.Start
+F.Intrinsic.Control.End
+Program.Sub.frmFMISBatch_UnLoad.End
+Program.Sub.cmdRun_Click.Start
+F.Intrinsic.Control.Try
+	F.Intrinsic.Control.CallSub(CheckValidDates)
+	F.Intrinsic.Control.CallSub(BuildBITable)
+F.Intrinsic.Control.Catch
+	F.Intrinsic.Control.CallSub(ErrorMsg, CurrentSub, v.Ambient.CurrentSubroutine)
+F.Intrinsic.Control.EndTry
+Program.Sub.cmdRun_Click.End
+
+Program.Sub.CheckValidDates.Start
+F.Intrinsic.Control.Try
+	V.Local.lDiff.Declare
+	
+	V.Global.dStart.Set(V.Screen.frmFMISBatch!dtpStartDate.Text)
+	V.Global.dEnd.Set(V.Screen.frmFMISBatch!dtpEndDate.Text)
+
+	F.Intrinsic.Date.DateDiff("D", V.Global.dStart, V.Global.dEnd, V.Local.lDiff)
+	F.Intrinsic.Control.If(V.Local.lDiff, <, 0)
+		F.Intrinsic.UI.Msgbox("Please Ensure Starting Date Is Before Ending Date", "Invalid Date Range")
+		F.Intrinsic.Control.ExitSub
+	F.Intrinsic.Control.EndIf
+	
+F.Intrinsic.Control.Catch
+	F.Intrinsic.Control.CallSub(ErrorMsg, CurrentSub, v.Ambient.CurrentSubroutine)
+F.Intrinsic.Control.EndTry
+Program.Sub.CheckValidDates.End
+
+Program.Sub.CallReport.Start
+F.Intrinsic.Control.Try
+
+
+F.Intrinsic.Control.Catch
+	F.Intrinsic.Control.CallSub(ErrorMsg, CurrentSub, v.Ambient.CurrentSubroutine)
+F.Intrinsic.Control.EndTry
+Program.Sub.CallReport.End
+
+Program.Sub.CreateDBTable.Start
+F.Intrinsic.Control.Try
+	V.Local.bExists.Declare
+	V.Local.sSQL.Declare
+	
+	'BI Table needs to be located in a company code's DB due to Crystal & GSSRL not allowing for connection to GLOBALCOMMON db
+	F.Global.General.OverrideCompany("M01")
+	F.ODBC.Connection!con.OpenCompanyConnection
+	F.ODBC.Connection!con.TableExists("GCG_6891_BI_FMIS", V.Local.bExists)
+	F.Intrinsic.Control.If(V.Local.bExists.Not)
+		V.Local.sSQL.Set("CREATE TABLE GCG_6891_BI_FMIS(TRMNL CHAR(3), RPTID CHAR(6), COMP_CODE CHAR(3), GSS_BATCH CHAR(5), INVOICE CHAR(14), FMIS_BATCH CHAR(3), POST_DATE DATE, POST_AMT NUMERIC(16,2))")
+		F.ODBC.Connection!con.Execute(V.Local.sSQL)
+	F.Intrinsic.Control.EndIf
+	F.ODBC.Connection!con.Close
+	
+F.Intrinsic.Control.Catch
+	F.Intrinsic.Control.CallSub(ErrorMsg, CurrentSub, v.Ambient.CurrentSubroutine)
+F.Intrinsic.Control.EndTry
+Program.Sub.CreateDBTable.End
+
+Program.Sub.Comments.Start
+${$5$}$20.1.8474.24170$}$1
+${$6$}$bmedina$}$20231027125008555$}$kOipCrsyLBVj2KoSwkcdK23ChxGVcBlESZeGFMQ2K//h4/d2eyLdfzDbKM5cFMxf/Fo8nPL/GCE=
+Program.Sub.Comments.End
