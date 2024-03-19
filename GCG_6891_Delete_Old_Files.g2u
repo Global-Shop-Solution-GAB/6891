@@ -1,0 +1,51 @@
+﻿Program.Sub.Preflight.Start
+Program.Sub.Preflight.End
+
+Program.Sub.Main.Start
+'Brandon Medina 
+'Customer: Maryland Correctional Enterprises
+'Quote: 13575
+'Desc: FMIS Integration. This script runs as a daily unattended task. Goes into Global\Files Directory to delete any fmsbatch.txt files over 7 days old (from the time it was last saved, not the file name, which has the date)
+F.Intrinsic.Control.Try
+	V.Local.iDaysCutOff.Declare
+	V.Local.sDateCutOff.Declare
+	V.Local.sFilesArray.Declare
+	V.Local.sFileDirectory.Declare
+	V.Local.iFile.Declare
+	V.Local.sFileDate.Declare
+	V.Local.sFileFQP.Declare
+	V.Local.sTodayDate.Declare
+	V.Local.iDateDiff.Declare
+	
+	V.Local.sTodayDate.Set(V.Ambient.Now.FormatMM/DD/YYYY)
+	
+	V.Local.iDaysCutOff.Set(7)
+	F.Intrinsic.String.Build("{0}\6891_Batch_Files\", V.Caller.FilesDir, V.Local.sFileDirectory)
+	F.Intrinsic.File.GetFileList(V.Local.sFileDirectory, , V.Local.sFilesArray)
+	F.Intrinsic.String.Split(V.Local.sFilesArray, ":", V.Local.sFilesArray)
+	
+	F.Intrinsic.Control.For(V.Local.iFile, 0, V.Local.sFilesArray.UBound, 1)
+		F.Intrinsic.String.Build("{0}{1}", V.Local.sFileDirectory, V.Local.sFilesArray(V.Local.iFile), V.Local.sFileFQP)
+		F.Intrinsic.File.GetFileDateTime(V.Local.sFileFQP, V.Local.sFileDate)
+		F.Intrinsic.Date.DateDiff("D", V.Local.sFileDate.FormatMM/DD/YYYY, V.Local.sTodayDate, V.Local.iDateDiff)
+		F.Intrinsic.Control.If(V.Local.iDateDiff, >, V.Local.iDaysCutOff)
+			F.Intrinsic.File.DeleteFile(V.Local.sFileFQP)
+		F.Intrinsic.Control.EndIf
+	F.Intrinsic.Control.Next(V.Local.iFile)
+
+F.Intrinsic.Control.Catch
+	F.Intrinsic.Control.CallSub(ErrorMsg, "Sub", V.Ambient.CurrentSubroutine, "ErrorNo", V.Ambient.ErrorNumber, "ErrorDesc", V.Ambient.ErrorDescription)
+F.Intrinsic.Control.EndTry
+Program.Sub.Main.End
+
+Program.Sub.ErrorMsg.Start
+V.Local.sError.Declare
+	F.Intrinsic.String.Build("Project: {0}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}", V.Caller.ScriptFile, V.Ambient.NewLine, V.Args.sub, V.Args.ErrorNo, V.Args.ErrorDesc, V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+F.Intrinsic.Control.End
+Program.Sub.ErrorMsg.End
+
+Program.Sub.Comments.Start
+${$5$}$20.1.8286.22461$}$1
+${$6$}$bmedina$}$20221017150050847$}$kOipCrsyLBVj2KoSwkcdK23ChxGVcBlEyRHH04QL22Pmf8lCAq35UUnLmH7c882GZ5SOX3zpGGk=
+Program.Sub.Comments.End
