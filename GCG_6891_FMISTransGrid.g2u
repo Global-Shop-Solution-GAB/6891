@@ -1,0 +1,1427 @@
+﻿Program.Sub.ScreenSU.Start
+Gui.frmFMIS..Create(BaseForm)
+Gui.frmFMIS..Caption("Transmit Invoice Batches to FMIS")
+Gui.frmFMIS..Size(16530,10800)
+Gui.frmFMIS..MinX(14200)
+Gui.frmFMIS..MinY(4000)
+Gui.frmFMIS..Position(0,0)
+Gui.frmFMIS..AlwaysOnTop(False)
+Gui.frmFMIS..FontName("Tahoma")
+Gui.frmFMIS..FontSize(8.25)
+Gui.frmFMIS..ControlBox(True)
+Gui.frmFMIS..MaxButton(True)
+Gui.frmFMIS..MinButton(True)
+Gui.frmFMIS..MousePointer(0)
+Gui.frmFMIS..Moveable(True)
+Gui.frmFMIS..Sizeable(True)
+Gui.frmFMIS..ShowInTaskBar(True)
+Gui.frmFMIS..TitleBar(True)
+Gui.frmFMIS..Event(UnLoad,frmFMIS_UnLoad)
+Gui.frmFMIS.GsGCBatches.Create(GsGridControl)
+Gui.frmFMIS.GsGCBatches.Enabled(True)
+Gui.frmFMIS.GsGCBatches.Visible(True)
+Gui.frmFMIS.GsGCBatches.Zorder(0)
+Gui.frmFMIS.GsGCBatches.Size(16215,8310)
+Gui.frmFMIS.GsGCBatches.Position(150,1245)
+Gui.frmFMIS.GsGCBatches.Event(RowCellClick,GsGCBatches_RowCellClick)
+Gui.frmFMIS.GsGCBatches.Anchor(15)
+Gui.frmFMIS.cmdSelect.Create(Button)
+Gui.frmFMIS.cmdSelect.Enabled(True)
+Gui.frmFMIS.cmdSelect.Visible(True)
+Gui.frmFMIS.cmdSelect.Zorder(0)
+Gui.frmFMIS.cmdSelect.Size(1125,345)
+Gui.frmFMIS.cmdSelect.Position(270,9690)
+Gui.frmFMIS.cmdSelect.Caption("Select All")
+Gui.frmFMIS.cmdSelect.FontName("Tahoma")
+Gui.frmFMIS.cmdSelect.FontSize(8.25)
+Gui.frmFMIS.cmdSelect.Event(Click,cmdSelect_Click)
+Gui.frmFMIS.cmdSelect.Anchor(6)
+Gui.frmFMIS.cmdDeselect.Create(Button)
+Gui.frmFMIS.cmdDeselect.Enabled(True)
+Gui.frmFMIS.cmdDeselect.Visible(True)
+Gui.frmFMIS.cmdDeselect.Zorder(0)
+Gui.frmFMIS.cmdDeselect.Size(1125,345)
+Gui.frmFMIS.cmdDeselect.Position(1650,9690)
+Gui.frmFMIS.cmdDeselect.Caption("Deselect All")
+Gui.frmFMIS.cmdDeselect.FontName("Tahoma")
+Gui.frmFMIS.cmdDeselect.FontSize(8.25)
+Gui.frmFMIS.cmdDeselect.Event(Click,cmdDeselect_Click)
+Gui.frmFMIS.cmdDeselect.Anchor(6)
+Gui.frmFMIS.cmdSend.Create(Button)
+Gui.frmFMIS.cmdSend.Enabled(True)
+Gui.frmFMIS.cmdSend.Visible(True)
+Gui.frmFMIS.cmdSend.Zorder(0)
+Gui.frmFMIS.cmdSend.Size(1125,345)
+Gui.frmFMIS.cmdSend.Position(3030,9690)
+Gui.frmFMIS.cmdSend.Caption("Send To FMIS")
+Gui.frmFMIS.cmdSend.FontName("Tahoma")
+Gui.frmFMIS.cmdSend.FontSize(8.25)
+Gui.frmFMIS.cmdSend.Event(Click,cmdSend_Click)
+Gui.frmFMIS.cmdSend.Anchor(6)
+Gui.frmFMIS.cmdRefresh.Create(Button)
+Gui.frmFMIS.cmdRefresh.Enabled(True)
+Gui.frmFMIS.cmdRefresh.Visible(True)
+Gui.frmFMIS.cmdRefresh.Zorder(0)
+Gui.frmFMIS.cmdRefresh.Size(765,345)
+Gui.frmFMIS.cmdRefresh.Position(225,90)
+Gui.frmFMIS.cmdRefresh.Caption("Refresh")
+Gui.frmFMIS.cmdRefresh.FontName("Tahoma")
+Gui.frmFMIS.cmdRefresh.FontSize(8.25)
+Gui.frmFMIS.cmdRefresh.Event(Click,cmdRefresh_Click)
+Gui.frmFMIS.txtFile.Create(TextBox,"Browse For Batch File to Manually Transmit...",True,6510,300,0,8805,9735,True,0,"Tahoma",8.25,,1)
+Gui.frmFMIS.txtFile.Locked(True)
+Gui.frmFMIS.txtFile.Anchor(10)
+Gui.frmFMIS.cmdBrowse.Create(Button)
+Gui.frmFMIS.cmdBrowse.Enabled(True)
+Gui.frmFMIS.cmdBrowse.Visible(True)
+Gui.frmFMIS.cmdBrowse.Zorder(0)
+Gui.frmFMIS.cmdBrowse.Size(345,300)
+Gui.frmFMIS.cmdBrowse.Position(15435,9735)
+Gui.frmFMIS.cmdBrowse.Caption("^")
+Gui.frmFMIS.cmdBrowse.FontName("Tahoma")
+Gui.frmFMIS.cmdBrowse.FontSize(8.25)
+Gui.frmFMIS.cmdBrowse.Event(Click,cmdBrowse_Click)
+Gui.frmFMIS.cmdBrowse.Anchor(10)
+Gui.frmFMIS.picGSSLogo.Create(PictureBox)
+Gui.frmFMIS.picGSSLogo.Enabled(True)
+Gui.frmFMIS.picGSSLogo.Visible(True)
+Gui.frmFMIS.picGSSLogo.Zorder(0)
+Gui.frmFMIS.picGSSLogo.Size(4125,960)
+Gui.frmFMIS.picGSSLogo.Position(5925,90)
+Gui.frmFMIS.picGSSLogo.Anchor(1)
+Gui.frmFMIS.txtTransmitted.Create(TextBox,"Prev Transmitted",True,1530,300,0,12570,930,True,0,"Tahoma",8.25,65535,1)
+Gui.frmFMIS.txtTransmitted.Anchor(9)
+Gui.frmFMIS.txtTransmitted.Locked(True)
+Gui.frmFMIS.txtTransmitted.ToolTip("Record has been previously transmitted to FMIS ")
+Gui.frmFMIS.txtNeverTransmit.Create(TextBox,"Never Transmitted",True,1530,300,0,14160,930,True,0,"Tahoma",8.25,,1)
+Gui.frmFMIS.txtNeverTransmit.Locked(True)
+Gui.frmFMIS.txtNeverTransmit.ToolTip("Record has never been transmitted to FMIS")
+Gui.frmFMIS.txtNeverTransmit.Anchor(9)
+Gui.frmFMIS.progressBarInitialLoad.Create(ProgressBar)
+Gui.frmFMIS.progressBarInitialLoad.Visible(False)
+Gui.frmFMIS.progressBarInitialLoad.Size(3780,270)
+Gui.frmFMIS.progressBarInitialLoad.Position(225,840)
+Gui.frmFMIS.lblStatus.Create(Label,"Loading Invoice Batches...",False,1920,195,0,225,540,True,0,"Tahoma",8.25,,0,0)
+Gui.frmFMIS.lblStatus.BorderStyle(0)
+Gui.frmFMIS.dtpOverride.Create(DatePicker)
+Gui.frmFMIS.dtpOverride.Enabled(False)
+Gui.frmFMIS.dtpOverride.Visible(True)
+Gui.frmFMIS.dtpOverride.Zorder(0)
+Gui.frmFMIS.dtpOverride.Size(1500,300)
+Gui.frmFMIS.dtpOverride.Position(10740,930)
+Gui.frmFMIS.dtpOverride.CheckBox(False)
+Gui.frmFMIS.dtpOverride.FontName("Tahoma")
+Gui.frmFMIS.dtpOverride.FontSize(8.25)
+Gui.frmFMIS.dtpOverride.Anchor(9)
+Gui.frmFMIS.chkDateOverride.Create(CheckBox)
+Gui.frmFMIS.chkDateOverride.Enabled(True)
+Gui.frmFMIS.chkDateOverride.Visible(True)
+Gui.frmFMIS.chkDateOverride.Zorder(0)
+Gui.frmFMIS.chkDateOverride.Size(2040,300)
+Gui.frmFMIS.chkDateOverride.Position(10470,540)
+Gui.frmFMIS.chkDateOverride.Caption("Transmit Date Override")
+Gui.frmFMIS.chkDateOverride.FontName("Tahoma")
+Gui.frmFMIS.chkDateOverride.FontSize(8.25)
+Gui.frmFMIS.chkDateOverride.Anchor(9)
+Gui.frmFMIS.chkDateOverride.Event(Change,chkDateOverride_Change)
+Program.Sub.ScreenSU.End
+
+Program.Sub.Preflight.Start
+V.Global.sGridViews.Declare
+V.Global.iARCID.Declare
+V.Global.bConOpen.Declare
+V.Global.bReadNxtBatch.Declare(Boolean, False)
+V.Global.bReadNxtDoc.Declare(Boolean, False)
+V.Global.sRemoteHost.Declare
+V.Global.sRemoteUser.Declare
+V.Global.sRemotePass.Declare
+V.Global.sRemotePort.Declare
+V.Global.sRemotePath.Declare
+V.Global.bManualUpload.Declare(Boolean, False)
+V.Global.iSelectedRowIndex.Declare
+'Program.External.Include.Library("Gridview_UniversalFunctions.lib")
+Program.Sub.Preflight.End
+Program.Sub.Main.Start
+'Brandon Medina 
+'Customer: Maryland Correctional Enterprises
+'Quote: 13575
+'Desc: FMIS Integration. This is the main script of the project. Grid view that displays all posted AP invoice batches not yet sent to FMIS 
+'Here the users willl be able to select which batches they want to transmit to the FMIS server via SFTP
+'The format of the grid borrows heavily from Josh Withrow's GridviewTemplate_DashForm script 
+F.Intrinsic.Control.Try
+	V.Local.bTableExist.Declare
+	V.Local.iRet.Declare
+	V.Local.sGssLogo.Declare
+	
+	F.Intrinsic.String.Build("{0}\ART\GAB_GSS_Logo_Green_Dash.png",V.Caller.GlobalDir,V.Local.sGssLogo)
+	Gui.frmFMIS.picGSSLogo.Picture(V.Local.sGssLogo)
+	'Separate groups of gridviews with #$#
+	V.Global.sGridViews.Set("frmFMIS*!*GsGCBatches*!*gvBatches")
+	
+	
+	F.ODBC.Connection!con.OpenCommonConnection
+	V.Global.bConOpen.Set(True)
+	F.ODBC.Connection!con.TableExists("GCG_6891_SETTINGS", V.Local.bTableExist)
+	F.ODBC.Connection!con.ExecuteAndReturn("select count(*) from GCG_6891_SETTINGS", V.Local.iRet)
+	F.Intrinsic.Control.If(V.Local.bTableExist, =, False, OR, V.Local.iRet, <>, 1)
+		F.Intrinsic.UI.Msgbox("Please have an admin user set FTP Credentials from menu item System Support > Administration > 6469 SFTP Credentials Maintenance", "Missing FTP Credentials")
+		F.Intrinsic.Control.End
+	F.Intrinsic.Control.EndIf
+	F.ODBC.Connection!con.Close
+	V.Global.bConOpen.Set(False)
+	
+	F.Intrinsic.Control.CallSub(SetARCID)
+	F.Intrinsic.Control.CallSub(SetContextMenu)
+	F.Intrinsic.Control.CallSub(CreateCustomTable)
+	Gui.frmFMIS..Show
+	F.Intrinsic.Control.CallSub(LoadData)
+F.Intrinsic.Control.Catch
+	F.Intrinsic.Control.CallSub(ErrorMsg,"Sub",V.Ambient.CurrentSubroutine,"ErrorNo",V.Ambient.ErrorNumber,"ErrorDesc",V.Ambient.ErrorDescription)
+F.Intrinsic.Control.EndTry
+Program.Sub.Main.End
+
+Program.Sub.SetARCID.Start
+F.Intrinsic.Control.Try
+	V.Local.sError.Declare
+	
+	V.Local.sFile.Declare
+	V.Local.sName.Declare
+	V.Local.sNameSplit.Declare
+	
+	F.Intrinsic.String.Split(V.Caller.ScriptFile,"\",V.Local.sFile)
+	F.Intrinsic.String.Split(V.Local.sFile(V.Local.sFile.UBound),".",V.Local.sName)
+	F.Intrinsic.String.Split(V.Local.sName,"_",V.Local.sNameSplit)
+	V.Global.iARCID.Set(V.Local.sNameSplit(1).Long)
+	
+F.Intrinsic.Control.Catch
+	F.Intrinsic.Control.CallSub(ErrorMsg,"Sub",V.Ambient.CurrentSubroutine,"ErrorNo",V.Ambient.ErrorNumber,"ErrorDesc",V.Ambient.ErrorDescription) 
+F.Intrinsic.Control.EndTry
+Program.Sub.SetARCID.End
+
+Program.Sub.ErrorMsg.Start
+V.Local.sError.Declare
+	Gui.frmFMIS.GsGCBatches.HideWait
+	Gui.frmFMIS.progressBarInitialLoad.Visible(False)
+	Gui.frmFMIS.lblStatus.Visible(False)
+	F.Intrinsic.Control.UnBlockEvents
+	F.Intrinsic.String.Build("Project: {0}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}", V.Caller.ScriptFile, V.Ambient.NewLine, V.Args.sub, V.Args.ErrorNo, V.Args.ErrorDesc, V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+F.Intrinsic.Control.End
+Program.Sub.ErrorMsg.End
+Program.Sub.frmFMIS_UnLoad.Start
+F.Intrinsic.Control.End
+Program.Sub.frmFMIS_UnLoad.End
+Program.Sub.cmdSend_Click.Start
+F.Intrinsic.Control.Try
+	'Variables used in general
+	V.Local.sRet.Declare
+	V.Local.sNextFMISBatchNo.Declare
+	V.Local.sFMISBatchNums.Declare
+	V.Local.sCurrentDate.Declare
+	V.Local.sGSSBatchNums.Declare
+	V.Local.sFileExport.Declare
+	V.Local.sFile.Declare
+	V.Local.sSQL.Declare
+	V.Local.sUserID.Declare
+	V.Local.sMsg.Declare
+	V.Local.sUserS.Declare
+	V.Local.sUserR.Declare
+	V.Local.sMsgFile.Declare
+	
+	'Variables used in Batch File 
+	V.Local.sMailCode.Declare
+	V.Local.sHeaderString.Declare
+	V.Local.sDetailString.Declare
+	V.Local.sFileContent.Declare
+	V.Local.iDetail.Declare
+	V.Local.iHeader.Declare
+	V.Local.sBatchSeqNo.Declare
+	V.Local.sBlank20.Declare(String, "                    ")
+	V.Local.sBlank2.Declare(String, "  ")
+	V.Local.sBlank4.Declare(String, "    ")
+	V.Local.sBlank8.Declare(String, "        ")
+	V.Local.sBlank1.Declare(String, " ")
+	V.Local.sBlank7.Declare(String, "       ")
+	V.Local.sBlank5.Declare(String, "     ")
+	V.Local.sBlank25.Declare
+	F.Intrinsic.String.LPad(V.Local.sBlank25, " ", 25, V.Local.sBlank25)
+	V.Local.sBlank32.Declare
+	F.Intrinsic.String.LPad(V.Local.sBlank32, " ", 32, V.Local.sBlank32)
+	V.Local.sBlank41.Declare
+	F.Intrinsic.String.LPad(V.Local.sBlank41, " ", 41, V.Local.sBlank41)
+	V.Local.sBlank66.Declare
+	F.Intrinsic.String.LPad(V.Local.sBlank66, " ", 66, V.Local.sBlank66)
+	V.Local.sBlank82.Declare
+	F.Intrinsic.String.LPad(V.Local.sBlank82, " ", 82, V.Local.sBlank82)
+	V.Local.sBlank281.Declare
+	F.Intrinsic.String.LPad(V.Local.sBlank281, " ", 281, V.Local.sBlank281)
+	V.Local.sBlank618.Declare
+	F.Intrinsic.String.LPad(V.Local.sBlank618, " ", 618, V.Local.sBlank618)
+	V.Local.sLastSeqUsed.Declare
+	V.Local.sJulianDate.Declare
+	V.Local.sCntBatchDetailRecs.Declare
+	V.Local.sFilter.Declare
+	V.Local.sBatchAmt.Declare
+	V.Local.sAgencyCode.Declare
+	V.Local.sVendFedID.Declare
+	V.Local.sInvoice.Declare
+	V.Local.sInvoiceDate.Declare
+	V.Local.sInvoiceDateSQL.Declare
+	V.Local.sEffectiveDate.Declare
+	V.Local.sInvcDueDate.Declare
+	V.Local.sServiceDate.Declare
+	V.Local.sDocNum.Declare
+	V.Local.sDocSuff.Declare
+	V.Local.sTransactionAmt.Declare
+	V.Local.sDiscAmt.Declare
+	V.Local.sInvcDesc.Declare
+	V.Local.sTemp.Declare	
+	V.Local.bHardCoded.Declare
+	V.Local.sProgramCostAcct.Declare
+	V.Local.sPreviousInvoice.Declare
+	V.Local.sVendFedIDHyphen.Declare
+	V.Local.sError.Declare
+	V.Local.sPostDate.Declare
+	V.Local.bNegative.Declare
+	V.Local.sFiscalYear.Declare
+	V.Local.sGLPeriod.Declare
+	V.Local.sBatchCompanyCombos.Declare
+	V.Local.sLastBatchFile.Declare
+	
+	F.Intrinsic.Control.BlockEvents
+	V.Local.sCurrentDate.Set(V.Ambient.Now.FormatMM/DD/YYYY)
+	
+	F.Intrinsic.Control.If(V.Global.bManualUpload)
+		Gui.frmFMIS.GsGCBatches.InvokeWait("Reading in FMIS Batch File...","Please Wait",False)
+		F.Intrinsic.Control.GoTo("UPLOAD")
+	F.Intrinsic.Control.Else
+		Gui.frmFMIS.GsGCBatches.InvokeWait("Creating FMIS Batch File...","Please Wait",False)
+	F.Intrinsic.Control.EndIf
+	
+	
+'This sub grabs all currently selected lines from the grid, and builds up the batch and control files as described in the quote
+	F.Intrinsic.Control.If(V.DataView.dtDataAll!dvSelectedLines.Exists)
+		F.Data.DataView.Close("dtDataAll", "dvSelectedLines")
+	F.Intrinsic.Control.EndIf
+	
+	F.Data.DataView.Create("dtDataAll", "dvSelectedLines", 22, "SELECT = 1", "GSS_BATCH")
+	F.Intrinsic.Control.If(V.DataView.dtDataAll!dvSelectedLines.RowCount, =, 0)
+		F.Intrinsic.UI.Msgbox("Please make a selection before sending file to FMIS")
+		F.Intrinsic.Control.ExitSub
+	F.Intrinsic.Control.EndIf
+	
+
+	'Create string array of unique GSS batches that will need to be assigned a 3 digit FMIS batch no
+		'Lines should be grouped/assigned FMIS Batch numbers according to GSS_Batch as well as Company Code 
+	F.Data.DataView.ToDataTableDistinct("dtDataAll", "dvSelectedLines", "dtAllUniqueBatches", "GSS_BATCH*!*COMPANY_CODE")
+	'Concat Company Code here 
+	F.Data.DataTable.AddExpressionColumn("dtAllUniqueBatches", "BATCH_CC", "String", "GSS_BATCH + COMPANY_CODE")
+	'F.Data.DataTable.ColumnToString("dtAllUniqueBatches", "GSS_BATCH", V.Local.sGSSBatchNums)
+	F.Data.DataTable.ColumnToString("dtAllUniqueBatches", "BATCH_CC", V.Local.sBatchCompanyCombos)
+	F.Intrinsic.String.Split(V.Local.sBatchCompanyCombos, "*!*", V.Local.sBatchCompanyCombos)
+	F.Data.DataTable.Close("dtAllUniqueBatches")
+	
+	'Creating helper dt with which we will use later on to filter off things 
+	F.Intrinsic.Control.If(V.DataTable.dtSelectedLines.Exists)
+		F.Data.DataTable.Close("dtSelectedLines")
+	F.Intrinsic.Control.EndIf
+	F.Data.DataView.ToDataTable("dtDataAll", "dvSelectedLines", "dtSelectedLines")
+		'Add FED ID column that will be string type (not encrypted)
+	F.Data.DataTable.AddColumn("dtSelectedLines", "FED_ID", "String")
+	F.Data.DataTable.AddColumn("dtSelectedLines", "FMIS_BATCH", "String")
+	F.Data.DataTable.AddColumn("dtSelectedLines", "FMIS_SEQ", "String")
+	F.Data.DataTable.AddColumn("dtSelectedLines", "POST_DATE_SQL", "String")
+	F.Data.DataTable.AddColumn("dtSelectedLines", "INVOICE_DATE_SQL", "String")
+	F.Data.DataTable.AddColumn("dtSelectedLines", "TRANS_DATE_SQL", "String")
+	F.Data.DataTable.AddColumn("dtSelectedLines", "DOC_NUM", "String")
+	F.Data.DataTable.AddColumn("dtSelectedLines", "DOC_NUM_SUFF", "String")
+	F.Data.DataTable.AddColumn("dtSelectedLines", "FILE_TRANSFERRED", "String")
+	F.Data.DataTable.AddColumn("dtSelectedLines", "REUPLOAD_FLAG", "Boolean")
+	
+	F.Data.DataTable.AddExpressionColumn("dtSelectedLines", "BATCH_CC", "String", "GSS_BATCH + COMPANY_CODE")
+	
+	'Build Batch File: 
+	'File has 2 components, header and detail. Header section is given to each FMIS batch no, with the accompanying detail lines. This repeats for every FMIS batch no
+	
+	F.Intrinsic.Control.For(V.Local.iHeader, 0, V.Local.sBatchCompanyCombos.UBound, 1)
+		'START: section grabs and formats data that will be used in the string.build statement for the header section
+			'*Ensure to blank out current invoice when going onto next batch
+			V.Local.sInvoice.Set("")
+			
+			'Get Next FMIS batch number 
+		F.Intrinsic.Control.If(V.Local.iHeader, =, 0)
+			V.Global.bReadNxtBatch.Set(True)
+			F.Intrinsic.Control.CallSub(GetNextBatchNo)
+		F.Intrinsic.Control.Else
+			V.Global.bReadNxtBatch.Set(False)
+			F.Intrinsic.Control.CallSub(GetNextBatchNo, "sLastBatchNo", V.Local.sNextFMISBatchNo)
+		F.Intrinsic.Control.EndIf
+		
+		V.Local.sBatchSeqNo.Set("00000")
+		V.Local.sNextFMISBatchNo.Set(V.Args.sNextBatchNo)
+		
+		
+			'This is set to count batch detail count later on
+		V.Local.sLastSeqUsed.Set("     ")
+		
+			
+			'This returns standard gab date/time, w julian day tacked on at the end (last 3 chars)
+		F.Intrinsic.Date.ToJulianDate(V.Local.sCurrentDate, "DDD", V.Local.sJulianDate)
+		F.Intrinsic.String.Build("{0}{1}", V.Local.sCurrentDate.Formatyy, V.Local.sJulianDate.Right3, V.Local.sJulianDate)
+		
+			'Determine how many detail records exist for the current GSS/FMIS batch number the loop is currently on
+		F.Intrinsic.Control.If(V.DataView.dtSelectedLines!dvCurrentBatch.Exists)
+			F.Data.DataView.Close("dtSelectedLines", "dvCurrentBatch")
+		F.Intrinsic.Control.EndIf
+		'F.Intrinsic.String.Build("GSS_BATCH = '{0}'", V.Local.sGSSBatchNums(V.Local.iHeader), V.Local.sFilter)
+		F.Intrinsic.String.Build("BATCH_CC = '{0}'", V.Local.sBatchCompanyCombos(V.Local.iHeader), V.Local.sFilter)
+		F.Data.DataView.Create("dtSelectedLines", "dvCurrentBatch", 22, V.Local.sFilter, "INVOICE")
+		F.Intrinsic.Control.If(V.DataTable.dtCurrentBatch.Exists)
+			F.Data.DataTable.Close("dtCurrentBatch")
+		F.Intrinsic.Control.EndIf
+		F.Data.DataView.ToDataTable("dtSelectedLines", "dvCurrentBatch", "dtCurrentBatch")
+		V.Local.sCntBatchDetailRecs.Set(V.DataTable.dtCurrentBatch.RowCount)
+		F.Intrinsic.String.LPad(V.Local.sCntBatchDetailRecs, "0", 5, V.Local.sCntBatchDetailRecs)
+		
+			'Seems to always match the total detail record count 
+		V.Local.sLastSeqUsed.Set(V.Local.sCntBatchDetailRecs)
+		
+			'Add expression column to get total batch amount
+		F.Data.DataTable.AddColumn("dtCurrentBatch", "TotBchtAmt", "String")
+		F.Data.DataTable.RunningTotal("dtCurrentBatch", "INVOICE_AMT", "0", "+", "TotBchtAmt")
+		
+				'Format to get any trailing 0s back on there, since GAB only goes out to 1 decmial point if sum is whole from the running total function
+		F.Intrinsic.String.Format(V.DataTable.dtCurrentBatch(V.DataTable.dtCurrentBatch.RowCount--).TotBchtAmt!FieldValTrim, "#.00", V.Local.sBatchAmt)
+		F.Intrinsic.String.Replace(V.Local.sBatchAmt, ".", "", V.Local.sBatchAmt)
+				'Account for negative numbers, which will be taking up one of the 13 spaces, so pad to 12, add back the - sign
+		F.Intrinsic.String.IsInString(V.Local.sBatchAmt, "-", True, V.Local.bNegative)
+		F.Intrinsic.Control.If(V.Local.bNegative)
+			F.Intrinsic.String.Replace(V.Local.sBatchAmt, "-", "", V.Local.sBatchAmt)
+			F.Intrinsic.String.LPad(V.Local.sBatchAmt, "0", 12, V.Local.sBatchAmt)
+			F.Intrinsic.String.Concat("-", V.Local.sBatchAmt, V.Local.sBatchAmt)
+		F.Intrinsic.Control.Else
+			F.Intrinsic.String.Format(V.Local.sBatchAmt, "0000000000000", V.Local.sBatchAmt)
+		F.Intrinsic.Control.EndIf
+	
+		
+		'Build header section
+		F.Intrinsic.String.Build("Q10{0}4{1}{2}INTERQ00                                  R  N YRY{3}{4}0       {5}{6}     000000000000000000N  {7}", V.Local.sCurrentDate.FormatYYYYMMDD, V.Local.sNextFMISBatchNo, V.Local.sBatchSeqNo, V.Local.sLastSeqUsed, V.Local.sJulianDate, V.Local.sCntBatchDetailRecs, V.Local.sBatchAmt, V.Local.sBlank618, V.Local.sHeaderString)
+		
+		'Write to the final string
+		F.Intrinsic.String.Build("{0}{1}{2}", V.Local.sFileContent, V.Local.sHeaderString, V.Ambient.NewLine, V.Local.sFileContent)
+		
+		'END Section
+		
+		'Get Fiscal Year to use in every detail line 
+		V.Local.sGLPeriod.Redim(0,0)
+		F.Intrinsic.Date.GLPeriodFromDate(V.Local.sCurrentDate, V.Local.sGLPeriod)
+		F.Intrinsic.Control.If(V.Local.sGLPeriod, =, "***NONE***")
+			F.Intrinsic.UI.Msgbox("Today's Date is not found within this Company Code's GL Calendar. Please set this up in company settings and try again.")
+			Gui.frmFMIS.GsGCBatches.HideWait
+			F.Intrinsic.Control.UnBlockEvents
+			F.Intrinsic.Control.ExitSub
+'			F.ODBC.Connection!con.Close
+'			V.Global.bConOpen.Set(False)
+		F.Intrinsic.Control.EndIf
+		F.Intrinsic.String.Split(V.Local.sGLPeriod, "*!*", V.Local.sGLPeriod)
+		V.Local.sFiscalYear.Set(V.Local.sGLPeriod(1).Right2)
+		'Build detail lines
+		F.Intrinsic.Control.For(V.Local.iDetail, 0, V.DataTable.dtCurrentBatch.RowCount--, 1)
+			'START: Section grabs and formats data that will be used in the string.build statement for the detail section
+			V.Local.sPreviousInvoice.Set(V.Local.sInvoice)
+			
+			F.Intrinsic.Math.Add(V.Local.sBatchSeqNo, 1, V.Local.sBatchSeqNo)
+			F.Intrinsic.String.LPad(V.Local.sBatchSeqNo, "0", 5, V.Local.sBatchSeqNo)
+			
+			
+			'Program Cost Acct #: 5 digits, starts with M1. Look at GL account #. If it is a 40001-40004, or 40006, then last 2 digits, w 0 tacked on the end, otherwise, use the first two numbers w/ 0 at end
+			V.Local.sTemp.Set(V.DataTable.dtCurrentBatch(V.Local.iDetail).GL_ACCT!FieldValTrim)
+			F.Intrinsic.Control.If(V.Local.sTemp.Length, <>, 7)
+				F.Intrinsic.String.LPad(V.Local.sTemp, "0", 7, V.Local.sTemp)
+			F.Intrinsic.Control.EndIf
+			F.Intrinsic.Control.If(V.Local.sTemp.Left4, =, "4000")
+				F.Intrinsic.Control.SelectCase(V.Local.sTemp.Right1)
+					F.Intrinsic.Control.CaseAny("1", "2", "3", "4", "6")
+						V.Local.bHardCoded.Set(True)
+					F.Intrinsic.Control.CaseElse	
+						V.Local.bHardCoded.Set(False)
+				F.Intrinsic.Control.EndSelect
+			F.Intrinsic.Control.Else
+				V.Local.bHardCoded.Set(False)
+			F.Intrinsic.Control.EndIf
+			
+			F.Intrinsic.Control.If(V.Local.bHardCoded)
+				V.Local.sTemp.Set(V.Local.sTemp.Right2)
+			F.Intrinsic.Control.Else
+				V.Local.sTemp.Set(V.Local.sTemp.Left2)
+			F.Intrinsic.Control.EndIf
+			F.Intrinsic.String.Build("M1{0}0", V.Local.sTemp, V.Local.sProgramCostAcct)
+			
+			'Agency Code - User 3 in GL_MASTER. Also Agency code (4 characters)
+			V.Local.sAgencyCode.Set(V.DataTable.dtCurrentBatch(V.Local.iDetail).AGENCY_CODEABCD!FieldValTrim)
+			V.Local.sAgencyCode.Set(V.Local.sAgencyCode.Left4)
+				'Pad out to 4 blanks in case there's nothing here 
+			F.Intrinsic.String.LPad(V.Local.sAgencyCode, " ", 4, V.Local.sAgencyCode)
+			
+			'Vendor Fed ID: 10 long, Starts with R. Not the same as Vendor number, but rather is FedIDNum from VENDOR_ENCRPT.FEDERAL_ID_ENC
+			F.Global.Encryption.Decrypt(V.DataTable.dtCurrentBatch(V.Local.iDetail).FED_IDABCD!FieldVal, V.Local.sVendFedID)
+			V.Local.sVendFedIDHyphen.Set(V.Local.sVendFedID.Trim)
+			V.Local.sVendFedID.Set(V.Local.sVendFedID.Trim)
+			F.Intrinsic.String.Replace(V.Local.sVendFedID, "-", "", V.Local.sVendFedID)
+			
+			F.Intrinsic.Control.If(V.Local.sVendFedID.Length, <>, 9)
+				F.Intrinsic.String.Build("Vendor: {0} has a Vendor Federal ID that is the wrong length.{1}Please ensure it is 10 characters long with a hyphen in it.", V.DataTable.dtCurrentBatch(V.Local.iDetail).VENDOR!FieldValTrim, V.Ambient.NewLine, V.Local.sError)
+				F.Intrinsic.UI.Msgbox(V.Local.sError, "Incorrect Fed ID on Vendor")
+				Gui.frmFMIS.GsGCBatches.HideWait
+				F.Intrinsic.Control.UnBlockEvents
+				'F.ODBC.Connection!con.Close
+				'V.Global.bConOpen.Set(False)
+				F.Intrinsic.Control.ExitSub
+			F.Intrinsic.Control.EndIf
+			V.Local.sVendFedID.Set(V.Local.sVendFedID.Trim)
+				
+	
+			'Mail Code - Stored by Batch and invoice
+			F.ODBC.Connection!con.OpenCommonConnection
+			V.Global.bConOpen.Set(True)
+			'F.Intrinsic.String.Build("select MAIL_CODE, SERV_DATE from GCG_6891_MAIL_CODE where VEND_FED_ID = '{0}'", V.Local.sVendFedID, V.Local.sSQL)
+			F.Intrinsic.String.Build("select MAIL_CODE, SERV_DATE from GCG_6891_MAIL_CODE where GSS_BATCH = '{0}' and INVOICE_NO = '{1}'", V.DataTable.dtCurrentBatch(V.Local.iDetail).GSS_BATCH!FieldValTrim, V.DataTable.dtCurrentBatch(V.Local.iDetail).INVOICE!FieldValTrim, V.Local.sSQL)
+			F.ODBC.Connection!con.ExecuteAndReturn(V.Local.sSQL, V.Local.sRet)
+			F.Intrinsic.Control.If(V.Local.sRet, =, "")
+				F.Intrinsic.String.Build("Record for GSS Batch: {0} and Invoice Number: {1} does not have a mail code or service date entered. Please correct and try upload again", V.DataTable.dtCurrentBatch(V.Local.iDetail).GSS_BATCH!FieldValTrim, V.DataTable.dtCurrentBatch(V.Local.iDetail).INVOICE!FieldValTrim, V.Local.sError)
+				F.Intrinsic.UI.Msgbox(V.Local.sError)
+				Gui.frmFMIS.GsGCBatches.HideWait
+				F.Intrinsic.Control.UnBlockEvents
+				F.ODBC.Connection!con.Close
+				V.Global.bConOpen.Set(False)
+				F.Intrinsic.Control.ExitSub
+			F.Intrinsic.Control.EndIf
+			F.Intrinsic.String.Split(V.Local.sRet, "*!*", V.Local.sRet)
+			F.ODBC.Connection!con.Close
+			V.Global.bConOpen.Set(False)
+			
+			V.Local.sMailCode.Set(V.Local.sRet(0))
+			
+			'Invoice Num (14 chars total, RPad w blanks)
+			V.Local.sInvoice.Set(V.DataTable.dtCurrentBatch(V.Local.iDetail).INVOICE!FieldValTrim)
+			V.Local.sInvoice.Set(V.Local.sInvoice.Right14)
+			F.Intrinsic.String.RPad(V.Local.sInvoice, " ", 14, V.Local.sInvoice)
+			
+			'Invoice Date 
+			V.Local.sInvoiceDate.Set(V.DataTable.dtCurrentBatch(V.Local.iDetail).INVOICE_DATE!FieldValTrim)
+			V.Local.sInvoiceDateSQL.Set(V.Local.sInvoiceDate.FormatYYYY-MM-DD)
+			V.Local.sInvoiceDate.Set(V.Local.sInvoiceDate.FormatYYYYMMDD)
+			
+			'Doc # Auto Assigned (6 chars long)
+				'Call nextdocnum subroutine depending on which detail record no we're on. *Ensure to reset doc suffix and blank out prev invoice when going onto next batch 
+			F.Intrinsic.Control.If(V.Local.iHeader, =, 0, AND, V.Local.iDetail, =, 0)
+				V.Global.bReadNxtDoc.Set(True)
+				F.Intrinsic.Control.CallSub(GetNextDocNum)
+			F.Intrinsic.Control.Else
+				V.Global.bReadNxtDoc.Set(False)
+				F.Intrinsic.Control.CallSub(GetNextDocNum, "sLastDocNo", V.Local.sDocNum, "sLastDocSuff", V.Local.sDocSuff, "sPrevInvoice", V.Local.sPreviousInvoice, "sCurrentInvoice", V.Local.sInvoice)
+			F.Intrinsic.Control.EndIf
+			V.Local.sDocNum.Set(V.Args.sNextDocNum)
+			'Doc Seq # (3)
+			V.Local.sDocSuff.Set(V.Args.sNextDocSuff)
+			
+			'Invoice Due Date (Batch Date i.e. Current date + 1)
+			F.Intrinsic.Date.DateAdd("D", 1, V.Local.sCurrentDate, V.Local.sInvcDueDate)
+			F.Intrinsic.String.Format(V.Local.sInvcDueDate, "YYYYMMDD", V.Local.sInvcDueDate)
+	
+			'Service Date: Stored by Vend Fed ID. 
+			V.Local.sServiceDate.Set(V.Local.sRet(1))
+			
+			'Trans Amount 13 long, L pad w 0s
+			V.Local.sTransactionAmt.Set(V.DataTable.dtCurrentBatch(V.Local.iDetail).INVOICE_AMT!FieldValTrim)
+				'Add check if invoice amount is negative, error out if so and tell user
+			F.Intrinsic.Control.If(V.Local.sTransactionAmt, <, "0")
+				F.Intrinsic.UI.Msgbox("There is/are line(s) selected that have negative invoice amount(s). Please only select positive amounts.")
+				Gui.frmFMIS.GsGCBatches.HideWait
+				F.Intrinsic.Control.UnBlockEvents
+				F.Intrinsic.Control.ExitSub
+			F.Intrinsic.Control.EndIf
+			F.Intrinsic.String.Replace(V.Local.sTransactionAmt, ".", "", V.Local.sTransactionAmt)
+			F.Intrinsic.String.IsInString(V.Local.sTransactionAmt, "-", True, V.Local.bNegative)
+			F.Intrinsic.Control.If(V.Local.bNegative)
+				F.Intrinsic.String.Replace(V.Local.sTransactionAmt, "-", "", V.Local.sTransactionAmt)
+				F.Intrinsic.String.LPad(V.Local.sTransactionAmt, "0", 12, V.Local.sTransactionAmt)
+				F.Intrinsic.String.Concat("-", V.Local.sTransactionAmt, V.Local.sTransactionAmt)
+			F.Intrinsic.Control.Else
+				F.Intrinsic.String.LPad(V.Local.sTransactionAmt, "0", 13, V.Local.sTransactionAmt)
+			F.Intrinsic.Control.EndIf
+			
+			
+			'Discount Amt 13 long, L Pad w 0s 
+			V.Local.sDiscAmt.Set(V.DataTable.dtCurrentBatch(V.Local.iDetail).INVC_DISCT_CMPNYABCD!FieldValTrim)
+			F.Intrinsic.String.Replace(V.Local.sDiscAmt, ".", "", V.Local.sDiscAmt)
+			F.Intrinsic.String.IsInString(V.Local.sDiscAmt, "-", True, V.Local.bNegative)
+			F.Intrinsic.Control.If(V.Local.bNegative)
+				F.Intrinsic.String.Replace(V.Local.sDiscAmt, "-", "", V.Local.sDiscAmt)
+				F.Intrinsic.String.LPad(V.Local.sDiscAmt, "0", 12, V.Local.sDiscAmt)
+				F.Intrinsic.String.Concat("-", V.Local.sDiscAmt, V.Local.sDiscAmt)
+			F.Intrinsic.Control.Else
+				F.Intrinsic.String.LPad(V.Local.sDiscAmt, "0", 13, V.Local.sDiscAmt)
+			F.Intrinsic.Control.EndIf
+			
+			
+			'Invoice Desc (PO Num + blank + Receiver num i.e. Accrual Invc num) 30 long, Rpad 30 chars w/ blanks. Customer says PO Num + Reference Code. Use PO and Invoice here instead
+			F.Intrinsic.String.Build("{0} {1}", V.DataTable.dtCurrentBatch(V.Local.iDetail).PO_NO!FieldValTrim, V.DataTable.dtCurrentBatch(V.Local.iDetail).INVOICE!FieldValTrim, V.Local.sInvcDesc)
+			F.Intrinsic.String.RPad(V.Local.sInvcDesc, " ", 30, V.Local.sInvcDesc)
+			
+			'EDIT: 9/6 BM New override feature for effective date in FMIS file
+			F.Intrinsic.Control.If(V.Screen.frmFMIS!chkDateOverride.Value)
+				V.Local.sEffectiveDate.Set(V.Screen.frmFMIS!dtpOverride.Value)
+			F.Intrinsic.Control.Else
+				V.Local.sEffectiveDate.Set(V.Local.sCurrentDate)
+			F.Intrinsic.Control.EndIf
+			
+			F.Intrinsic.String.Build("Q10{0}4{1}{2}INTERQ00    {24}{3}  242  Q00{4}{5}    {6}{7}R{8}{9} {10}{11}        VV{12}{13}           {14}{15}{16}{17}{18}{19}{20}  000000000000000000{21}Q10{22}{23}", V.Local.sCurrentDate.FormatYYYYMMDD, V.Local.sNextFMISBatchNo, V.Local.sBatchSeqNo, V.Local.sFiscalYear, V.Local.sBlank20, V.Local.sProgramCostAcct, V.Local.sAgencyCode, V.Local.sBlank66, V.Local.sVendFedID, V.Local.sMailCode, V.Local.sInvoice, V.Local.sInvoiceDate, V.Local.sDocNum, V.Local.sDocSuff, V.Local.sInvcDueDate, V.Local.sServiceDate.FormatYYYYMMDD, V.Local.sBlank41, V.Local.sTransactionAmt, V.Local.sDiscAmt, V.Local.sInvcDesc, V.Local.sBlank32, V.Local.sBlank281, V.Local.sBlank82, V.Local.sCurrentDate.FormatYY, V.Local.sEffectiveDate.FormatYYYYMMDD, V.Local.sDetailString)
+			
+			'Write detail record to final string
+			F.Intrinsic.String.Build("{0}{1}{2}", V.Local.sFileContent, V.Local.sDetailString, V.Ambient.NewLine, V.Local.sFileContent)
+			
+			'Format Post Date for SQL writing 
+			V.Local.sPostDate.Set(V.DataTable.dtCurrentBatch(V.Local.iDetail).POST_DATE!FieldValTrim)
+			V.Local.sPostDate.Set(V.Local.sPostDate.FormatYYYY-MM-DD)
+			'Write the decrypted fed id to the dataview row (changes should reflect onto the dtselectedlines table). (Currently encrypted). Also set rest of the info for the line being processed here. This table (dtselectedlines) will be used to write to custom table (with hyphen and no preceeding R) so users have a way to see what data has been transmitted previously 
+			'F.Data.DataView.SetValue("dtSelectedLines", "dvCurrentBatch", V.Local.iDetail, "GSS_BATCH", V.Local.sGSSBatchNums(V.Local.iHeader).Trim, "BATCH_LINE", V.DataView.dtSelectedLines!dvCurrentBatch(V.Local.iDetail).BATCH_LINE!FieldValTrim, "FMIS_BATCH", V.Local.sNextFMISBatchNo.Right3, "FMIS_SEQ", V.Local.sBatchSeqNo, "TRANS_DATE_SQL", V.Local.sCurrentDate.FormatYYYY-MM-DD, "DOC_NUM", V.Local.sDocNum, "DOC_NUM_SUFF", V.Local.sDocSuff, "FED_ID", V.Local.sVendFedIDHyphen, "POST_DATE_SQL", V.Local.sPostDate, "INVOICE_DATE_SQL", V.Local.sInvoiceDateSQL)
+			Function.Intrinsic.Debug.Stop
+			'FIND OUT IF CUSTOMER WANTS DATE LINES ARE TRANSMITTED OR OVER RIDE DATE 
+			'F.Data.DataView.SetValue("dtSelectedLines", "dvCurrentBatch", V.Local.iDetail, "GSS_BATCH", V.Local.sBatchCompanyCombos(V.Local.iHeader).Left5, "BATCH_LINE", V.DataView.dtSelectedLines!dvCurrentBatch(V.Local.iDetail).BATCH_LINE!FieldValTrim, "FMIS_BATCH", V.Local.sNextFMISBatchNo.Right3, "FMIS_SEQ", V.Local.sBatchSeqNo, "TRANS_DATE_SQL", V.Local.sCurrentDate.FormatYYYY-MM-DD, "DOC_NUM", V.Local.sDocNum, "DOC_NUM_SUFF", V.Local.sDocSuff, "FED_ID", V.Local.sVendFedIDHyphen.Trim, "POST_DATE_SQL", V.Local.sPostDate, "INVOICE_DATE_SQL", V.Local.sInvoiceDateSQL)
+			F.Data.DataView.SetValue("dtSelectedLines", "dvCurrentBatch", V.Local.iDetail, "GSS_BATCH", V.Local.sBatchCompanyCombos(V.Local.iHeader).Left5, "BATCH_LINE", V.DataView.dtSelectedLines!dvCurrentBatch(V.Local.iDetail).BATCH_LINE!FieldValTrim, "FMIS_BATCH", V.Local.sNextFMISBatchNo.Right3, "FMIS_SEQ", V.Local.sBatchSeqNo, "TRANS_DATE_SQL", V.Local.sEffectiveDate.FormatYYYY-MM-DD, "DOC_NUM", V.Local.sDocNum, "DOC_NUM_SUFF", V.Local.sDocSuff, "FED_ID", V.Local.sVendFedIDHyphen.Trim, "POST_DATE_SQL", V.Local.sPostDate, "INVOICE_DATE_SQL", V.Local.sInvoiceDateSQL)
+		F.Intrinsic.Control.Next(V.Local.iDetail)
+		
+		F.Data.DataView.Close("dtSelectedLines", "dvCurrentBatch")
+		F.Data.DataTable.Close("dtCurrentBatch")
+		
+	F.Intrinsic.Control.Next(V.Local.iHeader)
+	
+	'Transfer to FMIS via SFTP. Use either grid contents if creating new one, or use the manual file if uploading that way
+	F.Intrinsic.Control.Label("UPLOAD")
+	Gui.frmFMIS.GsGCBatches.UpdateWait("Transferring Batch File to FMIS...", "Please Wait")
+	F.Intrinsic.Control.If(V.Global.bManualUpload)
+		V.Local.sFile.Set(V.Screen.frmFMIS!txtFile.Text.Trim)
+	F.Intrinsic.Control.Else
+		F.Intrinsic.String.Build("{0}\6891_Batch_Files\fmsbatch{1}.txt", V.Caller.FilesDir, V.Ambient.Now.FormatMMDDYYYYHHMMSS, V.Local.sFile)
+		F.Intrinsic.File.String2File(V.Local.sFile, V.Local.sFileContent)
+	F.Intrinsic.Control.EndIf
+	
+	'FTP transfer
+	F.Intrinsic.Control.CallSub(FTP_Upload, "sFile", V.Local.sFile)
+	
+	F.Intrinsic.UI.Msgbox("FTP File Transmission Successful")
+	
+	F.ODBC.Connection!con.OpenCommonConnection
+	V.Global.bConOpen.Set(True)
+	F.Intrinsic.String.Split(V.Local.sFile, "\", V.Local.sFileExport)
+	
+	'Save or update name of local txt file being transferred to appropriate record 
+	'Save CC, as well as doc num and seq
+	
+	F.Intrinsic.Control.If(V.Global.bManualUpload.Not)
+		F.Data.DataTable.SetValue("dtSelectedLines", -1, "FILE_TRANSFERRED", V.Local.sFileExport(V.Local.sFileExport.UBound).Trim)
+		F.Data.DataTable.SetValue("dtSelectedLines", -1, "REUPLOAD_FLAG", False)
+		'Save lines transmitted to custom table if successful		
+		F.Data.DataTable.SaveToDB("dtSelectedLines", "con", "GCG_6891_BATCHES", "GSS_BATCH*!*FMIS_BATCH*!*FMIS_SEQ", 128, "GSS_BATCH@!@GSS_BATCH*!*BATCH_LINE@!@GSS_BATCH_LN*!*COMPANY_CODE@!@COMP_CODE*!*POST_DATE_SQL@!@POST_DATE*!*VEND_NO@!@VENDOR_NO*!*VENDOR@!@VENDOR_NAME*!*INVOICE@!@INVOICE_NO*!*INVOICE_DATE_SQL@!@INVOICE_DATE*!*GL_ACCT@!@GL_ACCOUNT*!*INVOICE_AMT@!@INVOICE_AMT*!*PO_NO@!@PO_NUM*!*PO_LINE@!@PO_LINE*!*FMIS_BATCH@!@FMIS_BATCH*!*FMIS_SEQ@!@FMIS_BATCH_SEQ*!*TRANS_DATE_SQL@!@TRANS_DATE*!*DOC_NUM@!@DOC_NUM*!*DOC_NUM_SUFF@!@DOC_NUM_SUFF*!*FILE_TRANSFERRED@!@FILE_TRANSFERRED*!*REUPLOAD_FLAG@!@REUPLOAD_FLAG")
+		
+		'Write the last successfully transmitted FMIS batch to txt file
+		F.Intrinsic.String.Build("{0}\6891_LastBatchUsed.txt", V.Caller.FilesDir, V.Local.sLastBatchFile)
+		F.Intrinsic.File.String2File(V.Local.sLastBatchFile, V.Local.sNextFMISBatchNo.Left3)
+	F.Intrinsic.Control.Else
+		'Otherwise, just update the reupload flag to indicate that the file has been modified 
+		F.Intrinsic.String.Build("update GCG_6891_BATCHES set REUPLOAD_FLAG = 1 where FILE_TRANSFERRED = '{0}'", V.Local.sFileExport(V.Local.sFileExport.UBound).Trim, V.Local.sSQL)
+		F.ODBC.Connection!con.Execute(V.Local.sSQL)
+	F.Intrinsic.Control.EndIf
+	
+	F.ODBC.Connection!con.Close
+	V.Global.bConOpen.Set(False)
+	
+	'Send message to admin. This list is contained in txt file, delimited by newlines 
+	Gui.frmFMIS.GsGCBatches.UpdateWait("Sending Internal Message to Users...","Please Wait")
+	F.Intrinsic.Control.CallSub(SendMsg, "sLocalFileName", V.Local.sFile)
+	
+	Gui.frmFMIS.GsGCBatches.HideWait
+	F.Intrinsic.Control.UnBlockEvents
+	
+	
+F.Intrinsic.Control.Catch
+	F.Intrinsic.Control.CallSub(ErrorMsg, "Sub", V.Ambient.CurrentSubroutine, "ErrorNo", V.Ambient.ErrorNumber, "ErrorDesc", V.Ambient.ErrorDescription)
+	F.Intrinsic.Control.End
+F.Intrinsic.Control.EndTry
+Program.Sub.cmdSend_Click.End
+Program.Sub.cmdDeselect_Click.Start
+F.Intrinsic.Control.Try
+	F.Data.DataTable.SetValue("dtDataAll", -1, "SELECT", 0)
+	Gui.frmFMIS.txtFile.Text("Browse For Batch File to Manually Transmit...")
+	V.Global.bManualUpload.Set(False)
+F.Intrinsic.Control.Catch
+	F.Intrinsic.Control.CallSub(ErrorMsg, "Sub", V.Ambient.CurrentSubroutine, "ErrorNo", V.Ambient.ErrorNumber, "ErrorDesc", V.Ambient.ErrorDescription)
+F.Intrinsic.Control.EndTry
+Program.Sub.cmdDeselect_Click.End
+Program.Sub.cmdSelect_Click.Start
+F.Intrinsic.Control.Try
+	F.Data.DataTable.SetValue("dtDataAll", -1, "SELECT", 1)
+F.Intrinsic.Control.Catch
+	F.Intrinsic.Control.CallSub(ErrorMsg, "Sub", V.Ambient.CurrentSubroutine, "ErrorNo", V.Ambient.ErrorNumber, "ErrorDesc", V.Ambient.ErrorDescription)
+F.Intrinsic.Control.EndTry
+Program.Sub.cmdSelect_Click.End
+Program.Sub.GsGCBatches_RowCellClick.Start
+F.Intrinsic.Control.Try
+	V.Local.iX.Declare
+	V.Local.iY.Declare
+
+	F.Intrinsic.Control.SelectCase(V.Args.Column.UCase)
+		F.Intrinsic.Control.Case("SELECT")
+			F.Intrinsic.Control.If(V.DataTable.dtDataAll(V.Args.RowIndex).Select!FieldVal, =, True)
+				F.Data.DataTable.SetValue("dtDataAll", V.Args.RowIndex, "Select", False)
+			F.Intrinsic.Control.Else
+				F.Data.DataTable.SetValue("dtDataAll", V.Args.RowIndex, "Select", True)
+			F.Intrinsic.Control.EndIf
+	F.Intrinsic.Control.EndSelect
+	
+	'Get row index user clicked on for context menu 
+	F.Intrinsic.Control.If(V.Args.Button.UCase, =, "RIGHT")
+		F.Intrinsic.Control.If(V.Args.RowIndex, <>, -1)
+			'Get Mouse Position to determine where to draw context menu 
+			F.Intrinsic.API.GetMousePosition(V.Local.iX, V.Local.iY)
+			V.Global.iSelectedRowIndex.Set(V.Args.RowIndex)
+			Gui.frmFMIS..ContextMenuShow("ctxSelAll", V.Local.iX, V.Local.iY)
+			F.Intrinsic.Control.ExitSub
+		F.Intrinsic.Control.EndIf
+	F.Intrinsic.Control.EndIf
+F.Intrinsic.Control.Catch
+	F.Intrinsic.Control.CallSub(ErrorMsg, "Sub", V.Ambient.CurrentSubroutine, "ErrorNo", V.Ambient.ErrorNumber, "ErrorDesc", V.Ambient.ErrorDescription)
+F.Intrinsic.Control.EndTry
+Program.Sub.GsGCBatches_RowCellClick.End
+
+Program.Sub.LoadData.Start
+F.Intrinsic.Control.Try
+	V.Local.sGridViews.Declare
+	V.Local.sControls.Declare
+	V.Local.iCnt.Declare
+	V.Local.sSQL.Declare
+	V.Local.sCompanies.Declare
+	V.Local.sDatabase.Declare
+	V.Local.i.Declare
+	V.Local.sDataTableName.Declare
+	V.Local.sDataTables.Declare
+	V.Local.sRet.Declare
+	V.Local.sStatusMsg.Declare
+	V.Local.dErrorDate.Declare
+	V.Local.bDictExists.Declare
+	V.Local.sSubDTNameA.Declare
+	V.Local.sSubDTNameA1.Declare
+	V.Local.sSubDTNameA2.Declare
+	V.Local.sSubDTNameA12.Declare
+	V.Local.sSubDTNameA3.Declare
+	V.Local.sSubDTNameB.Declare
+	V.Local.sSubDTNameB1.Declare
+	V.Local.sSubDTNameB12.Declare
+	V.Local.sSubDTNameB123.Declare
+	V.Local.sSubDTNameB2.Declare
+	V.Local.sSourceNameArgA1.Declare
+	V.Local.sSourceNameArgA2.Declare
+	V.Local.sSourceNameArgA12.Declare
+	V.Local.sSourceNameArgA3.Declare
+	V.Local.sSourceNameArgB1.Declare
+	V.Local.sSourceNameArgB12.Declare
+	V.Local.sSourceNameArgB123.Declare
+	V.Local.sSourceNameArgB2.Declare
+	
+	
+	V.Local.dErrorDate.Set("1900-01-01")
+	
+	F.Intrinsic.Control.If(V.DataTable.dtDataAll1.Exists)
+		F.Data.DataTable.Close("dtDataAll1")
+	F.Intrinsic.Control.EndIf
+		
+	F.Intrinsic.Control.BlockEvents
+	Gui.frmFMIS.GsGCBatches.InvokeWait("Loading...","Please Wait",False)
+	Gui.frmFMIS.lblStatus.Visible(True)
+	Gui.frmFMIS.progressBarInitialLoad.Visible(True)
+	Gui.frmFMIS.progressBarInitialLoad.Min(0)
+	
+	'Grab all company codes on the server, create data table set from each, combine and send the final result to dtDataAll1
+	F.ODBC.Connection!conx.OpenCommonConnection
+	'Only build data from live codes, all start w/ the letter M. Exclude company M02
+	F.ODBC.Connection!conx.ExecuteAndReturn("select COCODE from COMPANIES where COCODE not in ('M02', 'M16', 'M22', 'M29', 'MCC', 'MCE', 'MET') and left(COCODE, 1) = 'M'", V.Local.sCompanies)
+	F.ODBC.Connection!conx.Close
+	F.Intrinsic.String.Split(V.Local.sCompanies, "#$#", V.Local.sCompanies)
+	
+	F.ODBC.Connection!con.OpenCompanyConnection
+	V.Global.bConOpen.Set(True)
+	
+	Gui.frmFMIS.progressBarInitialLoad.Max(V.Local.sCompanies.UBound)
+
+	F.Intrinsic.Control.For(V.Local.i, 0, V.Local.sCompanies.UBound, 1)
+		F.Intrinsic.String.Build("Loading Invoice Batches for Company: {0}...", V.Local.sCompanies(V.Local.i), V.Local.sStatusMsg)
+		Gui.frmFMIS.lblStatus.Caption(V.Local.sStatusMsg)
+		'Modify because Invoice/accruals have the GL account number on them coming through as 60001. select statements on both sides of union are the same, except 1st one is pulling from GL_AP_DETAIL, and second is pulling from AP_INV_TAX_DTL. The latter table is needed to populate line records that had the original lines on the PO consolidated into the 60001 GL. This second table conserves each lines original GL account, which is what we want for invoice/accruals.
+		
+		'Break up union into 2 dt and do a merge instead per company code. Was getting timeout error before once data set got large enough
+		F.Intrinsic.String.Build("GLOBAL{0}", V.Local.sCompanies(V.Local.i), V.Local.sDataTableName)
+		F.Intrinsic.String.Build("GLOBAL{0}A", V.Local.sCompanies(V.Local.i), V.Local.sSubDTNameA)
+		F.Intrinsic.String.Build("GLOBAL{0}A1", V.Local.sCompanies(V.Local.i), V.Local.sSubDTNameA1)
+		F.Intrinsic.String.Build("GLOBAL{0}A2", V.Local.sCompanies(V.Local.i), V.Local.sSubDTNameA2)
+		F.Intrinsic.String.Build("GLOBAL{0}A12", V.Local.sCompanies(V.Local.i), V.Local.sSubDTNameA12)
+		F.Intrinsic.String.Build("GLOBAL{0}A3", V.Local.sCompanies(V.Local.i), V.Local.sSubDTNameA3)
+		'Now split up Subtable B into it's parts to linq join 		
+		F.Intrinsic.String.Build("GLOBAL{0}B", V.Local.sCompanies(V.Local.i), V.Local.sSubDTNameB)
+		F.Intrinsic.String.Build("GLOBAL{0}B1", V.Local.sCompanies(V.Local.i), V.Local.sSubDTNameB1)
+		F.Intrinsic.String.Build("GLOBAL{0}B12", V.Local.sCompanies(V.Local.i), V.Local.sSubDTNameB12)
+		F.Intrinsic.String.Build("GLOBAL{0}B123", V.Local.sCompanies(V.Local.i), V.Local.sSubDTNameB123)
+		F.Intrinsic.String.Build("GLOBAL{0}B2", V.Local.sCompanies(V.Local.i), V.Local.sSubDTNameB2)
+
+		
+		'Merge these 2 tables (GL_AP_DETAIL & AP_INV_TAX_DTL). GL_AP_DETAIL contains all invoice batches, while AP_INV_TAX_DTL should have all invoice accrual batches (with the correct GL account). These are denoted as an invoice accrual batch by starting with the letter "P" 
+		'F.Intrinsic.String.Build("select cast(0 as Bit) as 'Select', '{0}' as COMPANY_CODE, ltrim(rtrim(A.BATCH)) as GSS_BATCH, ltrim(rtrim(A.LINE)) as BATCH_LINE, A.POST_DATE_SQL as POST_DATE, ltrim(rtrim(A.VENDOR)) as VEND_NO, ltrim(rtrim(A.VENDOR_NAME)) as VENDOR, ltrim(rtrim(A.INVOICE_NO)) as INVOICE, A.INVC_DATE_SQL as INVOICE_DATE, ltrim(rtrim(A.GL_NUMBER)) as GL_ACCT, A.AMOUNT_CMPNY as INVOICE_AMT, ltrim(rtrim(A.PO_NUM)) as PO_NO, ltrim(rtrim(A.PO_LINE)) as PO_LINE, A.USERID as USER_IDABCD, A.INVC_DISCT_CMPNY as INVC_DISCT_CMPNYABCD, ltrim(rtrim(B.USER_3)) as AGENCY_CODEABCD, C.FEDERAL_ID_ENC as FED_IDABCD from GLOBAL{0}.GL_AP_DETAIL A left join GLOBAL{0}.GL_MASTER B on ltrim(rtrim(A.GL_NUMBER)) = ltrim(rtrim(B.GL_ACCOUNT)) left join GLOBAL{0}.VENDOR_ENCRYPT C on ltrim(rtrim(A.VENDOR)) = ltrim(rtrim(C.VENDOR_ID)) where A.AP_CODE in ('10', '12', '13') and A.GL_NUMBER <> '60000' and A.GL_NUMBER <> '60001' and left(A.BATCH, 1) <> 'P'", V.Local.sCompanies(V.Local.i), V.Local.sSQL)
+		'F.Intrinsic.String.Build("select cast(0 as Bit) as 'Select', '{0}' as COMPANY_CODE, ltrim(rtrim(A.BATCH)) as GSS_BATCH, ltrim(rtrim(A.LINE)) as BATCH_LINE, A.POST_DATE_SQL as POST_DATE, ltrim(rtrim(A.VENDOR)) as VEND_NO, ltrim(rtrim(A.VENDOR_NAME)) as VENDOR, ltrim(rtrim(A.INVOICE_NO)) as INVOICE, A.INVC_DATE_SQL as INVOICE_DATE, ltrim(rtrim(A.GL_NUMBER)) as GL_ACCT, A.AMOUNT_CMPNY as INVOICE_AMT, ltrim(rtrim(A.PO_NUM)) as PO_NO, ltrim(rtrim(A.PO_LINE)) as PO_LINE, A.USERID as USER_IDABCD, A.INVC_DISCT_CMPNY as INVC_DISCT_CMPNYABCD, ltrim(rtrim(B.USER_3)) as AGENCY_CODEABCD, C.FEDERAL_ID_ENC as FED_IDABCD from GLOBAL{0}.GL_AP_DETAIL A left join GLOBAL{0}.GL_MASTER B on ltrim(rtrim(A.GL_NUMBER)) = ltrim(rtrim(B.GL_ACCOUNT)) left join GLOBAL{0}.VENDOR_ENCRYPT C on ltrim(rtrim(A.VENDOR)) = ltrim(rtrim(C.VENDOR_ID)) where A.AP_CODE in ('10', '12', '13') and A.GL_NUMBER <> '60000' and A.GL_NUMBER <> '60001' and left(A.BATCH, 1) <> 'P' and left(A.VENDOR, 1) <> 'Z'", V.Local.sCompanies(V.Local.i), V.Local.sSQL)
+		
+		'EDIT BM 9/25/2023
+		'Further break up each left join from the sql statement to be done instead w/ a linq join in an attempt to help w/ slow load times
+		'A: GL_AP_DETAIL
+		'B: GL_MASTER
+		'C: VENDOR_ENCRYPT
+		'D: AP_INV_TAX_DTL
+		'E: V_VENDOR_MASTER
+		
+		F.Intrinsic.String.Build("select cast(0 as Bit) as 'Select', '{0}' as COMPANY_CODE, ltrim(rtrim(A.BATCH)) as GSS_BATCH, ltrim(rtrim(A.LINE)) as BATCH_LINE, A.POST_DATE_SQL as POST_DATE, ltrim(rtrim(A.VENDOR)) as VEND_NO, ltrim(rtrim(A.VENDOR_NAME)) as VENDOR, ltrim(rtrim(A.INVOICE_NO)) as INVOICE, A.INVC_DATE_SQL as INVOICE_DATE, ltrim(rtrim(A.GL_NUMBER)) as GL_ACCT, A.AMOUNT_CMPNY as INVOICE_AMT, ltrim(rtrim(A.PO_NUM)) as PO_NO, ltrim(rtrim(A.PO_LINE)) as PO_LINE, A.USERID as USER_IDABCD, A.INVC_DISCT_CMPNY as INVC_DISCT_CMPNYABCD from GLOBAL{0}.GL_AP_DETAIL A where A.AP_CODE in ('10', '12', '13') and A.GL_NUMBER <> '60000' and A.GL_NUMBER <> '60001' and left(A.BATCH, 1) <> 'P' and left(A.VENDOR, 1) <> 'Z'", V.Local.sCompanies(V.Local.i), V.Local.sSQL)
+		'F.Data.DataTable.CreateFromSQL(V.Local.sSubDTNameA, "con", V.Local.sSQL, True) 
+		F.Data.DataTable.CreateFromSQL(V.Local.sSubDTNameA1, "con", V.Local.sSQL, True)
+		
+		'These next 2 tables (A2 & A3) get used in the left join of both table A and B
+		F.Intrinsic.String.Build("select ltrim(rtrim(B.USER_3)) as AGENCY_CODEABCD, ltrim(rtrim(B.GL_ACCOUNT)) as GL_ACCOUNT from GLOBAL{0}.GL_MASTER B", V.Local.sCompanies(V.Local.i), V.Local.sSQL)
+		F.Data.DataTable.CreateFromSQL(V.Local.sSubDTNameA2, "con", V.Local.sSQL, True)
+		
+		F.Intrinsic.String.Build("select C.FEDERAL_ID_ENC as FED_IDABCD, ltrim(rtrim(C.VENDOR_ID)) as VENDOR_ID from GLOBAL{0}.VENDOR_ENCRYPT C", V.Local.sCompanies(V.Local.i), V.Local.sSQL)
+		F.Data.DataTable.CreateFromSQL(V.Local.sSubDTNameA3, "con", V.Local.sSQL, True)
+		
+		F.Intrinsic.String.Build("select cast(0 as Bit) as 'Select', '{0}' as COMPANY_CODE, ltrim(rtrim(D.BATCH_NUM)) as GSS_BATCH, ltrim(rtrim(D.BATCH_LINE)) as BATCH_LINE, D.POST_DATE_FORMAT as POST_DATE, ltrim(rtrim(D.VENDOR_ID)) as VEND_NO, ltrim(rtrim(D.INVOICE)) as INVOICE, D.INVC_DATE_FORMAT as INVOICE_DATE, ltrim(rtrim(D.GL_ACCOUNT)) as GL_ACCT, D.COST_INVOICED as INVOICE_AMT, ltrim(rtrim(D.PO_NO)) as PO_NO, ltrim(rtrim(D.PO_LINE)) as PO_LINE, D.LAST_CHG_BY as USER_IDABCD, cast('' as NUMERIC(10,2)) as INVC_DISCT_CMPNYABCD from GLOBAL{0}.AP_INV_TAX_DTL D where left(D.BATCH_NUM, 1) = 'P' and left(D.VENDOR_ID, 1) <> 'Z'", V.Local.sCompanies(V.Local.i), V.Local.sSQL)
+		F.Data.DataTable.CreateFromSQL(V.Local.sSubDTNameB1, "con", V.Local.sSQL, True)
+		
+		F.Intrinsic.String.Build("select ltrim(rtrim(E.NAME_VENDOR)) as VENDOR, ltrim(rtrim(E.VENDOR)) as VENDOR_MATCH from GLOBAL{0}.V_VENDOR_MASTER E", V.Local.sCompanies(V.Local.i), V.Local.sSQL)
+		F.Data.DataTable.CreateFromSQL(V.Local.sSubDTNameB2, "con", V.Local.sSQL, True)
+		
+		F.Intrinsic.String.Build("{0}*!*A1", V.Local.sSubDTNameA1, V.Local.sSourceNameArgA1)
+		F.Intrinsic.String.Build("{0}*!*A2", V.Local.sSubDTNameA2, V.Local.sSourceNameArgA2)
+		F.Intrinsic.String.Build("{0}*!*A12", V.Local.sSubDTNameA12, V.Local.sSourceNameArgA12)
+		F.Intrinsic.String.Build("{0}*!*A3", V.Local.sSubDTNameA3, V.Local.sSourceNameArgA3)
+		
+		F.Intrinsic.String.Build("{0}*!*B1", V.Local.sSubDTNameB1, V.Local.sSourceNameArgB1)
+		F.Intrinsic.String.Build("{0}*!*B12", V.Local.sSubDTNameB12, V.Local.sSourceNameArgB12)
+		F.Intrinsic.String.Build("{0}*!*B123", V.Local.sSubDTNameB123, V.Local.sSourceNameArgB123)
+		F.Intrinsic.String.Build("{0}*!*B2", V.Local.sSubDTNameB2, V.Local.sSourceNameArgB2)
+		
+		'Linq join the datatables above with Left joins in the following manner. This must be done 1 by 1 since linq.join cannot do more than 1 left join at a time 
+		'Left join A1 + A2 > A12
+		'Left join A12 + A3 > A
+		'Left join B1 + A2 > B12
+		'Left join B12 + A3 > B123
+		'Left join B123 + B2 > B
+		'Merge A + B > B 
+		'Merge B + dtDataAll1 > dtDataAll1
+		'Left join dtDataAll1 + dtCustomCompare > dtDataAll
+		
+		'A1 + A2 > A12
+		F.Data.Linq.Join(V.Enum.LinqJoinType!LeftJoin, V.Enum.LinqSourceType!DataTable, V.Local.sSourceNameArgA1, V.Enum.LinqSourceType!DataTable, V.Local.sSourceNameArgA2, "A1.GL_ACCT = A2.GL_ACCOUNT", "A1.Select*!*A1.COMPANY_CODE*!*A1.GSS_BATCH*!*A1.BATCH_LINE*!*A1.POST_DATE*!*A1.VEND_NO*!*A1.VENDOR*!*A1.INVOICE*!*A1.INVOICE_DATE*!*A1.GL_ACCT*!*A1.INVOICE_AMT*!*A1.PO_NO*!*A1.PO_LINE*!*A1.USER_IDABCD*!*A1.INVC_DISCT_CMPNYABCD*!*A2.AGENCY_CODEABCD", , , , V.Local.sSubDTNameA12, True)
+		
+		'A12 + A3 > A
+		F.Data.Linq.Join(V.Enum.LinqJoinType!LeftJoin, V.Enum.LinqSourceType!DataTable, V.Local.sSourceNameArgA12, V.Enum.LinqSourceType!DataTable, V.Local.sSourceNameArgA3, "A12.VEND_NO = A3.VENDOR_ID", "A12.Select*!*A12.COMPANY_CODE*!*A12.GSS_BATCH*!*A12.BATCH_LINE*!*A12.POST_DATE*!*A12.VEND_NO*!*A12.VENDOR*!*A12.INVOICE*!*A12.INVOICE_DATE*!*A12.GL_ACCT*!*A12.INVOICE_AMT*!*A12.PO_NO*!*A12.PO_LINE*!*A12.USER_IDABCD*!*A12.INVC_DISCT_CMPNYABCD*!*A12.AGENCY_CODEABCD*!*A3.FED_IDABCD", , , , V.Local.sSubDTNameA, True)
+		
+		'B1 + A2 > B12
+		F.Data.Linq.Join(V.Enum.LinqJoinType!LeftJoin, V.Enum.LinqSourceType!DataTable, V.Local.sSourceNameArgB1, V.Enum.LinqSourceType!DataTable, V.Local.sSourceNameArgA2, "B1.GL_ACCT = A2.GL_ACCOUNT", "B1.Select*!*B1.COMPANY_CODE*!*B1.GSS_BATCH*!*B1.BATCH_LINE*!*B1.POST_DATE*!*B1.VEND_NO*!*B1.INVOICE*!*B1.INVOICE_DATE*!*B1.GL_ACCT*!*B1.INVOICE_AMT*!*B1.PO_NO*!*B1.PO_LINE*!*B1.USER_IDABCD*!*B1.INVC_DISCT_CMPNYABCD*!*A2.AGENCY_CODEABCD", , , , v.Local.sSubDTNameB12, True)
+		
+		'B12 + A3 > B123
+		F.Data.Linq.Join(V.Enum.LinqJoinType!LeftJoin, V.Enum.LinqSourceType!DataTable, V.Local.sSourceNameArgB12, V.Enum.LinqSourceType!DataTable, V.Local.sSourceNameArgA3, "B12.VEND_NO = A3.VENDOR_ID", "B12.Select*!*B12.COMPANY_CODE*!*B12.GSS_BATCH*!*B12.BATCH_LINE*!*B12.POST_DATE*!*B12.VEND_NO*!*B12.INVOICE*!*B12.INVOICE_DATE*!*B12.GL_ACCT*!*B12.INVOICE_AMT*!*B12.PO_NO*!*B12.PO_LINE*!*B12.USER_IDABCD*!*B12.INVC_DISCT_CMPNYABCD*!*B12.AGENCY_CODEABCD*!*A3.FED_IDABCD", , , , v.Local.sSubDTNameB123, True)
+		
+		'B123 + B2 > B
+		F.Data.Linq.Join(V.Enum.LinqJoinType!LeftJoin, V.Enum.LinqSourceType!DataTable, V.Local.sSourceNameArgB123, V.Enum.LinqSourceType!DataTable, V.Local.sSourceNameArgB2, "B123.VEND_NO = B2.VENDOR_MATCH", "B123.Select*!*B123.COMPANY_CODE*!*B123.GSS_BATCH*!*B123.BATCH_LINE*!*B123.POST_DATE*!*B123.VEND_NO*!*B123.INVOICE*!*B123.INVOICE_DATE*!*B123.GL_ACCT*!*B123.INVOICE_AMT*!*B123.PO_NO*!*B123.PO_LINE*!*B123.USER_IDABCD*!*B123.INVC_DISCT_CMPNYABCD*!*B123.AGENCY_CODEABCD*!*B123.FED_IDABCD*!*B2.VENDOR", , , , v.Local.sSubDTNameB, True)
+		
+		
+'		F.Data.Linq.Join(V.Enum.LinqJoinType!LeftJoin, V.Enum.LinqSourceType!DataTable, V.Local.sSourceNameArgA1, V.Enum.LinqSourceType!DataTable, V.Local.sSourceNameArgA2, V.Enum.LinqSourceType!DataTable, V.Local.sSourceNameArgA3, "A1.GL_ACCT = A2.GL_ACCOUNT and A1.VEND_NO = A3.VENDOR_ID", "A1.Select*!*A1.COMPANY_CODE*!*A1.GSS_BATCH*!*A1.BATCH_LINE*!*A1.POST_DATE*!*A1.VEND_NO*!*A1.VENDOR*!*A1.INVOICE*!*A1.INVOICE_DATE*!*A1.GL_ACCT*!*A1.INVOICE_AMT*!*A1.PO_NO*!*A1.PO_LINE*!*A1.USER_IDABCD*!*A1.INVC_DISCT_CMPNYABCD*!*A2.AGENCY_CODEABCD*!*A3.FED_IDABCD", , , , V.Local.sSubDTNameA, True)
+	
+'		F.Data.Linq.Join(V.Enum.LinqJoinType!LeftJoin, V.Enum.LinqSourceType!DataTable, V.Local.sSourceNameArgB1, V.Enum.LinqSourceType!DataTable, V.Local.sSourceNameArgA2, V.Enum.LinqSourceType!DataTable, V.Local.sSourceNameArgA3, V.Enum.LinqSourceType!DataTable, V.Local.sSourceNameArgB2, "B1.GL_ACCT = A2.GL_ACCOUNT and B1.VEND_NO = A3.VENDOR_ID and B1.VEND_NO = B2.VENDOR_MATCH", "B1.Select*!*B1.COMPANY_CODE*!*B1.GSS_BATCH*!*B1.BATCH_LINE*!*B1.POST_DATE*!*B1.VEND_NO*!*B2.VENDOR*!*B1.INVOICE*!*B1.INVOICE_DATE*!*B1.GL_ACCT*!*B1.INVOICE_AMT*!*B1.PO_NO*!*B1.PO_LINE*!*B1.USER_IDABCD*!*B1.INVC_DISCT_CMPNYABCD*!*A2.AGENCY_CODEABCD*!*A3.FED_IDABCD", , , , v.Local.sSubDTNameB, True)
+		'F.Intrinsic.String.Build("select cast(0 as Bit) as 'Select', '{0}' as COMPANY_CODE, ltrim(rtrim(D.BATCH_NUM)) as GSS_BATCH, ltrim(rtrim(D.BATCH_LINE)) as BATCH_LINE, D.POST_DATE_FORMAT as POST_DATE, ltrim(rtrim(D.VENDOR_ID)) as VEND_NO, ltrim(rtrim(E.NAME_VENDOR)) as VENDOR, ltrim(rtrim(D.INVOICE)) as INVOICE, D.INVC_DATE_FORMAT as INVOICE_DATE, ltrim(rtrim(D.GL_ACCOUNT)) as GL_ACCT, D.COST_INVOICED as INVOICE_AMT, ltrim(rtrim(D.PO_NO)) as PO_NO, ltrim(rtrim(D.PO_LINE)) as PO_LINE, D.LAST_CHG_BY as USER_IDABCD, cast('' as NUMERIC(10,2)) as INVC_DISCT_CMPNYABCD, ltrim(rtrim(B.USER_3)) as AGENCY_CODEABCD, C.FEDERAL_ID_ENC as FED_IDABCD from GLOBAL{0}.AP_INV_TAX_DTL D left join GLOBAL{0}.GL_MASTER B on ltrim(rtrim(D.GL_ACCOUNT)) = ltrim(rtrim(B.GL_ACCOUNT)) left join GLOBAL{0}.VENDOR_ENCRYPT C on ltrim(rtrim(D.VENDOR_ID)) = ltrim(rtrim(C.VENDOR_ID)) left join GLOBAL{0}.V_VENDOR_MASTER E on ltrim(rtrim(D.VENDOR_ID)) = ltrim(rtrim(E.VENDOR)) where left(D.BATCH_NUM, 1) = 'P'", V.Local.sCompanies(V.Local.i), V.Local.sSQL)
+		
+		'F.Intrinsic.String.Build("select cast(0 as Bit) as 'Select', '{0}' as COMPANY_CODE, ltrim(rtrim(D.BATCH_NUM)) as GSS_BATCH, ltrim(rtrim(D.BATCH_LINE)) as BATCH_LINE, D.POST_DATE_FORMAT as POST_DATE, ltrim(rtrim(D.VENDOR_ID)) as VEND_NO, ltrim(rtrim(E.NAME_VENDOR)) as VENDOR, ltrim(rtrim(D.INVOICE)) as INVOICE, D.INVC_DATE_FORMAT as INVOICE_DATE, ltrim(rtrim(D.GL_ACCOUNT)) as GL_ACCT, D.COST_INVOICED as INVOICE_AMT, ltrim(rtrim(D.PO_NO)) as PO_NO, ltrim(rtrim(D.PO_LINE)) as PO_LINE, D.LAST_CHG_BY as USER_IDABCD, cast('' as NUMERIC(10,2)) as INVC_DISCT_CMPNYABCD, ltrim(rtrim(B.USER_3)) as AGENCY_CODEABCD, C.FEDERAL_ID_ENC as FED_IDABCD from GLOBAL{0}.AP_INV_TAX_DTL D left join GLOBAL{0}.GL_MASTER B on ltrim(rtrim(D.GL_ACCOUNT)) = ltrim(rtrim(B.GL_ACCOUNT)) left join GLOBAL{0}.VENDOR_ENCRYPT C on ltrim(rtrim(D.VENDOR_ID)) = ltrim(rtrim(C.VENDOR_ID)) left join GLOBAL{0}.V_VENDOR_MASTER E on ltrim(rtrim(D.VENDOR_ID)) = ltrim(rtrim(E.VENDOR)) where left(D.BATCH_NUM, 1) = 'P' and left(D.VENDOR_ID, 1) <> 'Z'", V.Local.sCompanies(V.Local.i), V.Local.sSQL)
+		'EDIT 9/25/2023 BM 
+		'F.Data.DataTable.CreateFromSQL(V.Local.sSubDTNameB, "con", V.Local.sSQL, True)
+		
+		'Merge A + B > B 
+		F.Data.DataTable.Merge(V.Local.sSubDTNameA, V.Local.sSubDTNameB, True, 1)
+		
+		F.Intrinsic.Control.If(V.DataTable.dtDataAll1.Exists, =, False)
+			F.Data.DataTable.Clone(V.Local.sSubDTNameB, "dtDataAll1", True)
+		F.Intrinsic.Control.EndIf
+		'Merge B + dtDataAll1 > dtDataAll1
+		F.Data.DataTable.Merge(V.Local.sSubDTNameB, "dtDataAll1", True, 1)
+	
+		'Close DTs 
+		F.Data.DataTable.Close(V.Local.sSubDTNameA)
+		F.Data.DataTable.Close(V.Local.sSubDTNameA1)
+		F.Data.DataTable.Close(V.Local.sSubDTNameA2)
+		F.Data.DataTable.Close(V.Local.sSubDTNameA12)
+		F.Data.DataTable.Close(V.Local.sSubDTNameA3)
+		F.Data.DataTable.Close(V.Local.sSubDTNameB)
+		F.Data.DataTable.Close(V.Local.sSubDTNameB1)
+		F.Data.DataTable.Close(V.Local.sSubDTNameB12)
+		F.Data.DataTable.Close(V.Local.sSubDTNameB123)
+		F.Data.DataTable.Close(V.Local.sSubDTNameB2)
+		
+		Gui.frmFMIS.progressBarInitialLoad.Value(V.Local.i)
+	F.Intrinsic.Control.Next(V.Local.i)
+	
+	F.ODBC.Connection!con.Close
+	V.Global.bConOpen.Set(False)
+	
+	'Query records from custom GCG_6891_BATCHES table. Create distinct table based on the 4 keys: GSS_BATCH, GSS_BATCH_LN, COMP_CODE, & INVOICE_NO
+	'This will ultimately help bring in column to determine which records have been transmitted before by doing a left join
+	F.ODBC.Connection!conx.OpenCommonConnection
+	F.Intrinsic.Control.If(V.DataTable.dtQueryCustom.Exists)
+		F.Data.DataTable.Close("dtQueryCustom")
+	F.Intrinsic.Control.EndIf
+	F.Data.DataTable.CreateFromSQL("dtQueryCustom", "conx", "select ltrim(rtrim(GSS_BATCH)) as GSS_BATCH, ltrim(rtrim(GSS_BATCH_LN)) as GSS_BATCH_LN, ltrim(rtrim(COMP_CODE)) as COMP_CODE, ltrim(rtrim(INVOICE_NO)) as INVOICE_NO from GCG_6891_BATCHES", True)
+	F.Data.DataView.Create("dtQueryCustom", "dvQueryCustom", 22)
+	F.Intrinsic.Control.If(V.DataTable.dtCustomCompare.Exists)
+		F.Data.DataTable.Close("dtCustomCompare")
+	F.Intrinsic.Control.EndIf
+	F.Data.DataView.ToDataTableDistinct("dtQueryCustom", "dvQueryCustom", "dtCustomCompare", "GSS_BATCH*!*GSS_BATCH_LN*!*COMP_CODE*!*INVOICE_NO")
+	F.Data.DataTable.AddColumn("dtCustomCompare", "TRANSMIT_FLAGABCD", "Boolean", True)
+	F.Data.DataTable.Close("dtQueryCustom")
+	F.ODBC.Connection!conx.Close
+	
+	
+	F.Intrinsic.Control.If(V.DataTable.dtDataAll.Exists)
+		F.Data.DataTable.Close("dtDataAll")
+	F.Intrinsic.Control.EndIf
+
+	'Remove INVOICE_DUE_DATEABCD as AP_INV_TAX_DTL does not contain it, and field isn't needed for fmis batch file. 
+	'F.Data.Linq.Join("LeftJoin", "DataTable", "dtDataAll1*!*DA", "DataTable", "dtCustomCompare*!*CC", "DA.GSS_BATCH = CC.GSS_BATCH and DA.BATCH_LINE = CC.GSS_BATCH_LN and DA.COMPANY_CODE = CC.COMP_CODE and DA.INVOICE = CC.INVOICE_NO", "DA.Select*!*DA.COMPANY_CODE*!*DA.GSS_BATCH*!*DA.BATCH_LINE*!*DA.POST_DATE*!*DA.VEND_NO*!*DA.VENDOR*!*DA.INVOICE*!*DA.INVOICE_DATE*!*DA.GL_ACCT*!*DA.INVOICE_AMT*!*DA.PO_NO*!*DA.PO_LINE*!*DA.USER_IDABCD*!*DA.INVOICE_DUE_DATEABCD*!*DA.INVC_DISCT_CMPNYABCD*!*DA.AGENCY_CODEABCD*!*DA.FED_IDABCD*!*CC.TRANSMIT_FLAGABCD", , , , "dtDataAll", True)
+	
+	'Left join dtDataAll1 + dtCustomCompare > dtDataAll
+	F.Data.Linq.Join("LeftJoin", "DataTable", "dtDataAll1*!*DA", "DataTable", "dtCustomCompare*!*CC", "DA.GSS_BATCH = CC.GSS_BATCH and DA.BATCH_LINE = CC.GSS_BATCH_LN and DA.COMPANY_CODE = CC.COMP_CODE and DA.INVOICE = CC.INVOICE_NO", "DA.Select*!*DA.COMPANY_CODE*!*DA.GSS_BATCH*!*DA.BATCH_LINE*!*DA.POST_DATE*!*DA.VEND_NO*!*DA.VENDOR*!*DA.INVOICE*!*DA.INVOICE_DATE*!*DA.GL_ACCT*!*DA.INVOICE_AMT*!*DA.PO_NO*!*DA.PO_LINE*!*DA.USER_IDABCD*!*DA.INVC_DISCT_CMPNYABCD*!*DA.AGENCY_CODEABCD*!*DA.FED_IDABCD*!*CC.TRANSMIT_FLAGABCD", , , , "dtDataAll", True)
+	
+	F.Data.DataTable.Close("dtDataAll1")
+	
+	'Add new mail code and service date column
+	'Create dictionaries to fill out new columns containing mail code & Service Date. 
+	
+	F.Data.DataTable.AddExpressionColumn("dtDataAll", "MAIL_CODE_MATCH", "String", "GSS_BATCH + INVOICE")
+	F.Data.Datatable.AddColumn("dtDataAll", "MAIL_CODE", "String")
+	F.Data.DataTable.AddColumn("dtDataAll", "SERV_DATE", "Date")
+	F.ODBC.Connection!conx.OpenCommonConnection
+	
+	V.Local.sSQL.Set("select ltrim(rtrim(GSS_BATCH)) + ltrim(rtrim(INVOICE_NO)) as MATCH, MAIL_CODE from GCG_6891_MAIL_CODE")
+	F.Data.Dictionary.Exists("dictMailCode", V.Local.bDictExists)
+	F.Intrinsic.Control.If(V.Local.bDictExists)
+		F.Data.Dictionary.Close("dictMailCode")
+	F.Intrinsic.Control.EndIf
+	F.Data.Dictionary.CreateFromSQL("dictMailCode", "conx", V.Local.sSQL)
+	F.Data.Dictionary.SetDefaultReturn("dictMailCode", "No Mail Code")
+	
+	V.Local.sSQL.Set("select ltrim(rtrim(GSS_BATCH)) + ltrim(rtrim(INVOICE_NO)) as MATCH, SERV_DATE from GCG_6891_MAIL_CODE")
+	F.Data.Dictionary.Exists("dictServDate", V.Local.bDictExists)
+	F.Intrinsic.Control.If(V.Local.bDictExists)
+		F.Data.Dictionary.Close("dictServDate")
+	F.Intrinsic.Control.EndIf
+	F.Data.Dictionary.CreateFromSQL("dictServDate", "conx", V.Local.sSQL)
+	F.Data.Dictionary.SetDefaultReturn("dictServDate", V.Local.dErrorDate)
+	
+	'Fill out based on GSS_BATCH and INVOICE_NO. This was added after original delivery per customer request 
+	F.Data.DataTable.FillFromDictionary("dtDataAll", "dictMailCode", "MAIL_CODE_MATCH", "MAIL_CODE")
+	F.Data.DataTable.FillFromDictionary("dtDataAll", "dictServDate", "MAIL_CODE_MATCH", "SERV_DATE")
+	F.Data.DataTable.RemoveColumn("dtDataAll", "MAIL_CODE_MATCH")
+	F.ODBC.Connection!conx.Close
+	
+	
+	F.Intrinsic.Control.CallSub(LoadGV,"DT", "dtDataAll", "GV", "gvBatches", "GSGC", "GsGCBatches", "FRM", "frmFMIS")
+	
+	Gui.frmFMIS.GsGCBatches.HideWait
+	F.Intrinsic.Control.UnBlockEvents
+	
+	Gui.frmFMIS.progressBarInitialLoad.Visible(False)
+	Gui.frmFMIS.lblStatus.Visible(False)
+	
+F.Intrinsic.Control.Catch
+	F.Intrinsic.Control.CallSub(ErrorMsg, "Sub", V.Ambient.CurrentSubroutine, "ErrorNo", V.Ambient.ErrorNumber, "ErrorDesc", V.Ambient.ErrorDescription)
+	F.Intrinsic.Control.End
+F.Intrinsic.Control.EndTry
+Program.Sub.LoadData.End
+
+Program.Sub.LoadGV.Start
+F.Intrinsic.Control.Try
+	V.Local.iCnt.Declare
+	V.Local.sFieldNames.Declare
+	V.Local.sColumns.Declare
+	V.Local.bRet.Declare
+	V.Local.sFormattedCaption.Declare
+	
+	Gui.[V.Args.FRM].[V.Args.GSGC].AddGridViewFromDataTable(V.Args.GV,V.Args.DT)
+	Gui.[V.Args.FRM].[V.Args.GSGC].SuspendLayout()
+	Gui.[V.Args.FRM].[V.Args.GSGC].SetGridViewProperty(V.Args.GV,"AllowSort",True)
+	Gui.[V.Args.FRM].[V.Args.GSGC].SetGridViewProperty(V.Args.GV,"AllowFilter",True)
+	Gui.[V.Args.FRM].[V.Args.GSGC].SetGridViewProperty(V.Args.GV,"OptionsViewShowGroupPanel",True)
+	
+	'Loop through columns names by using the V.DataTable.dtName.FieldNames
+	F.Intrinsic.String.Concat("",V.DataTable.[V.Args.DT].FieldNames,V.Local.sFieldNames)
+	F.Intrinsic.String.Split(V.Local.sFieldNames,"*!*",V.Local.sColumns)
+	F.Intrinsic.Control.For(V.Local.iCnt,0,V.Local.sColumns.UBound,1)
+		
+		F.Intrinsic.Control.SelectCase(V.Local.sColumns(V.Local.iCnt))
+			
+			F.Intrinsic.Control.Case("SELECT")
+				'Caption Formatting...  returns V.Args.sFromattedCaption with the formatted caption
+				F.Intrinsic.Control.CallSub(FormatCaption,"sCaption",V.Local.sColumns(V.Local.iCnt))
+				
+				'Main Properties
+				Gui.[V.Args.FRM].[V.Args.GSGC].SetColumnProperty(V.Args.GV,V.Local.sColumns(V.Local.iCnt),"VisibleIndex",V.Local.iCnt)
+				Gui.[V.Args.FRM].[V.Args.GSGC].SetColumnProperty(V.Args.GV,V.Local.sColumns(V.Local.iCnt),"HeaderFontBold",True)
+				Gui.[V.Args.FRM].[V.Args.GSGC].SetColumnProperty(V.Args.GV,V.Local.sColumns(V.Local.iCnt),"HeaderHAlignment","Near")
+				Gui.[V.Args.FRM].[V.Args.GSGC].SetColumnProperty(V.Args.GV,V.Local.sColumns(V.Local.iCnt),"CellHAlignment","Near")
+				Gui.[V.Args.FRM].[V.Args.GSGC].SetColumnProperty(V.Args.GV,V.Local.sColumns(V.Local.iCnt),"ReadOnly",False)
+				Gui.[V.Args.FRM].[V.Args.GSGC].SetColumnProperty(V.Args.GV,V.Local.sColumns(V.Local.iCnt),"AllowEdit",True)
+				Gui.[V.Args.FRM].[V.Args.GSGC].SetColumnProperty(V.Args.GV,V.Local.sColumns(V.Local.iCnt),"Caption",V.Args.sFormattedCaption)
+				
+			'Regular old read-only text column.
+			F.Intrinsic.Control.CaseElse
+				'Caption Formatting...  returns V.Args.sFromattedCaption with the formatted caption
+				F.Intrinsic.Control.CallSub(FormatCaption,"sCaption",V.Local.sColumns(V.Local.iCnt))
+				
+				'Main Properties
+				Gui.[V.Args.FRM].[V.Args.GSGC].SetColumnProperty(V.Args.GV,V.Local.sColumns(V.Local.iCnt),"VisibleIndex",V.Local.iCnt)
+				Gui.[V.Args.FRM].[V.Args.GSGC].SetColumnProperty(V.Args.GV,V.Local.sColumns(V.Local.iCnt),"HeaderFontBold",True)
+				Gui.[V.Args.FRM].[V.Args.GSGC].SetColumnProperty(V.Args.GV,V.Local.sColumns(V.Local.iCnt),"HeaderHAlignment","Near")
+				Gui.[V.Args.FRM].[V.Args.GSGC].SetColumnProperty(V.Args.GV,V.Local.sColumns(V.Local.iCnt),"CellHAlignment","Near")
+				Gui.[V.Args.FRM].[V.Args.GSGC].SetColumnProperty(V.Args.GV,V.Local.sColumns(V.Local.iCnt),"ReadOnly",True)
+				Gui.[V.Args.FRM].[V.Args.GSGC].SetColumnProperty(V.Args.GV,V.Local.sColumns(V.Local.iCnt),"AllowEdit",False)
+				Gui.[V.Args.FRM].[V.Args.GSGC].SetColumnProperty(V.Args.GV,V.Local.sColumns(V.Local.iCnt),"Caption",V.Args.sFormattedCaption)
+				
+				'If this is a date column, format the date and right align
+				F.Intrinsic.String.IsInString(V.Args.sFormattedCaption,"Date",False,V.Local.bRet)
+				F.Intrinsic.Control.If(V.Local.bRet)
+					Gui.[V.Args.FRM].[V.Args.GSGC].SetColumnProperty(V.Args.GV,V.Local.sColumns(V.Local.iCnt),"DisplayCustomDatetime","d")
+					Gui.[V.Args.FRM].[V.Args.GSGC].SetColumnProperty(V.Args.GV,V.Local.sColumns(V.Local.iCnt),"CellHAlignment","Far")
+				F.Intrinsic.Control.EndIf
+				
+				'If Caption ends in abcd hide it & strip that character out
+				
+				F.Intrinsic.String.IsInString(V.Args.sFormattedCaption, "abcd", False, V.Local.bRet)
+				F.Intrinsic.Control.If(V.Local.bRet)
+					Gui.[V.Args.FRM].[V.Args.GSGC].SetColumnProperty(V.Args.GV,V.Local.sColumns(V.Local.iCnt),"Visible", False)
+					F.Intrinsic.String.Replace(V.Args.sFormattedCaption, "abcd", "", V.Local.sFormattedCaption)
+					Gui.[V.Args.FRM].[V.Args.GSGC].SetColumnProperty(V.Args.GV,V.Local.sColumns(V.Local.iCnt),"Caption", V.Local.sFormattedCaption)
+				F.Intrinsic.Control.EndIf
+				
+		F.Intrinsic.Control.EndSelect
+
+	F.Intrinsic.Control.Next(V.Local.iCnt)
+	
+	'Add coloring to rows. Yellow if it has been transmitted
+'	Gui.[V.Args.FRM].[V.Args.GSGC].AddStyleFormatCondition(V.Args.GV, "TRANSMIT_FLAGABCD", "greenTag", "Equal", null)
+'	Gui.[V.Args.FRM].[V.Args.GSGC].SetStyleFormatConditionProperty(V.Args.GV, "TRANSMIT_FLAGABCD", "greenTag", "BackColor", #c6efce)
+'	Gui.[V.Args.FRM].[V.Args.GSGC].SetStyleFormatConditionProperty(V.Args.GV, "TRANSMIT_FLAGABCD", "greenTag", "ApplyToRow", True)
+	
+	
+	Gui.[V.Args.FRM].[V.Args.GSGC].AddStyleFormatCondition(V.Args.GV, "TRANSMIT_FLAGABCD", "yellowTag", "Equal", True)
+	Gui.[V.Args.FRM].[V.Args.GSGC].SetStyleFormatConditionProperty(V.Args.GV, "TRANSMIT_FLAGABCD", "yellowTag", "BackColor", #ffeb9c)
+	Gui.[V.Args.FRM].[V.Args.GSGC].SetStyleFormatConditionProperty(V.Args.GV, "TRANSMIT_FLAGABCD", "yellowTag", "ApplyToRow", True)
+	
+	Gui.[V.Args.FRM].[V.Args.GSGC].BestFitColumns(V.Args.GV)
+	
+	Gui.[V.Args.FRM].[V.Args.GSGC].AddGridGroupSummaryItem(V.Args.GV, "INVOICE_AMT", "INVOICE_AMT", "Sum", "Invoice Total: ", "", c2)
+	
+	Gui.[V.Args.FRM].[V.Args.GSGC].ResumeLayout()
+	
+	Gui.[V.Args.FRM].[V.Args.GSGC].MainView(V.Args.GV)
+	
+F.Intrinsic.Control.Catch
+	F.Intrinsic.Control.CallSub(ErrorMsg, "Sub", V.Ambient.CurrentSubroutine, "ErrorNo", V.Ambient.ErrorNumber, "ErrorDesc", V.Ambient.ErrorDescription)
+F.Intrinsic.Control.EndTry
+Program.Sub.LoadGV.End
+
+Program.Sub.FormatCaption.Start
+	'Sub just removes underscores of captions passed to it and makes columns proper case. Returns RV where formatted 
+	V.Local.sRet.Declare
+	
+	V.Local.sRet.Set(V.Args.sCaption)
+	
+	F.Intrinsic.String.Replace(V.Local.sRet,"_"," ",V.Local.sRet)
+	
+	
+	F.Intrinsic.Control.If(V.Local.sRet.Length,>,2)
+		V.Local.sRet.Set(V.Local.sRet.PCase)
+	F.Intrinsic.Control.EndIf
+	
+	F.Intrinsic.Variable.AddRV("sFormattedCaption",V.Local.sRet)
+
+Program.Sub.FormatCaption.End
+Program.Sub.cmdRefresh_Click.Start
+F.Intrinsic.Control.Try
+	F.Intrinsic.Control.CallSub(LoadData)
+	
+F.Intrinsic.Control.Catch
+	F.Intrinsic.Control.CallSub(ErrorMsg,"Sub",V.Ambient.CurrentSubroutine,"ErrorNo",V.Ambient.ErrorNumber,"ErrorDesc",V.Ambient.ErrorDescription) 
+F.Intrinsic.Control.EndTry
+Program.Sub.cmdRefresh_Click.End
+
+Program.Sub.CreateCustomTable.Start
+F.Intrinsic.Control.Try
+	V.Local.bTableExists.Declare(Boolean, False)
+	V.Local.sSQL.Declare
+	V.Local.sFolderPath.Declare
+	V.Local.bDirExists.Declare
+	
+	F.ODBC.Connection!con.OpenCommonConnection
+	'First table is for determining which records have already been transmitted
+	F.ODBC.Connection!con.TableExists("GCG_6891_BATCHES", V.Local.bTableExists)
+	
+	F.Intrinsic.Control.If(V.Local.bTableExists.Not)
+		F.ODBC.Connection!con.Execute("create table GCG_6891_BATCHES (GSS_BATCH CHAR(5), GSS_BATCH_LN NUMERIC(5,0), COMP_CODE CHAR(3), POST_DATE DATE, VENDOR_NO CHAR(6), VENDOR_NAME CHAR(30), INVOICE_NO CHAR(14), INVOICE_DATE DATE, GL_ACCOUNT CHAR(15), INVOICE_AMT NUMERIC(16, 2), PO_NUM CHAR(7), PO_LINE CHAR(3), FMIS_BATCH CHAR(3), FMIS_BATCH_SEQ CHAR(5), TRANS_DATE DATE, DOC_NUM CHAR(6), DOC_NUM_SUFF CHAR(3), FILE_TRANSFERRED CHAR(26), REUPLOAD_FLAG BIT)")
+	F.Intrinsic.Control.EndIf
+	
+	'Second is to store mail code info for use in the file buildup 
+	F.ODBC.Connection!con.TableExists("GCG_6891_MAIL_CODE", V.Local.bTableExists)
+	
+	F.Intrinsic.Control.If(V.Local.bTableExists.Not)
+		F.ODBC.Connection!con.Execute("create table GCG_6891_MAIL_CODE (GSS_BATCH CHAR(5), INVOICE_NO CHAR(14), VEND_FED_ID CHAR(11), MAIL_CODE CHAR(3), SERV_DATE DATE)")
+	F.Intrinsic.Control.EndIf
+	
+	F.Intrinsic.String.Build("{0}\6891_Batch_Files\", V.Caller.FilesDir, V.Local.sFolderPath)
+	F.Intrinsic.File.DirExists(V.Local.sFolderPath, V.Local.bDirExists)
+	F.Intrinsic.Control.If(V.Local.bDirExists.Not)
+		F.Intrinsic.File.CreateDir(V.Local.sFolderPath)
+	F.Intrinsic.Control.EndIf
+	
+	F.ODBC.Connection!con.Close
+	
+F.Intrinsic.Control.Catch
+	F.Intrinsic.Control.CallSub(ErrorMsg,"Sub",V.Ambient.CurrentSubroutine,"ErrorNo",V.Ambient.ErrorNumber,"ErrorDesc",V.Ambient.ErrorDescription) 
+F.Intrinsic.Control.EndTry
+Program.Sub.CreateCustomTable.End
+
+Program.Sub.GetNextBatchNo.Start
+F.Intrinsic.Control.Try
+	V.Local.sRet.Declare
+	V.Local.sNextFMISBatchNo.Declare
+	V.Local.sLastBatchNo.Declare
+	V.Local.sLastBatchFile.Declare
+	V.Local.bFileExists.Declare
+	
+	F.ODBC.Connection!con.OpenCommonConnection 
+	V.Global.bConOpen.Set(True)
+	
+	'Means we're looking at first record of the file, read from file to know where to start numbering from
+	F.Intrinsic.Control.If(V.Global.bReadNxtBatch)
+		F.ODBC.Connection!con.ExecuteAndReturn("select coalesce (max(FMIS_BATCH), 'NO-RET') from GCG_6891_BATCHES", V.Local.sRet)
+		F.Intrinsic.String.Build("{0}\6891_LastBatchUsed.txt", V.Caller.FilesDir, V.Local.sLastBatchFile)
+		F.Intrinsic.File.Exists(V.Local.sLastBatchFile, V.Local.bFileExists)
+		
+		F.Intrinsic.Control.If(V.Local.bFileExists.Not)
+			'Create file with largest recorded FMIS batch no 
+			F.Intrinsic.Control.If(V.Local.sRet, =, "NO-RET")
+				V.Local.sNextFMISBatchNo.Set("001")
+			F.Intrinsic.Control.EndIf
+			
+			F.Intrinsic.File.String2File(V.Local.sLastBatchFile, V.Local.sRet)
+		F.Intrinsic.Control.EndIf
+		
+
+		F.Intrinsic.File.File2String(V.Local.sLastBatchFile, V.Local.sRet)
+		V.Local.sRet.Set(V.Local.sRet.Trim)
+		'Account for situation where batch 999 has been reached
+		F.Intrinsic.Control.If(V.Local.sRet, =, "999")
+			V.Local.sNextFMISBatchNo.Set("001")
+		F.Intrinsic.Control.Else
+			F.Intrinsic.Math.Add(V.Local.sRet, 1, V.Local.sNextFMISBatchNo)
+			F.Intrinsic.String.LPad(V.Local.sNextFMISBatchNo, "0", 3, V.Local.sNextFMISBatchNo)
+		F.Intrinsic.Control.EndIf
+	
+	F.Intrinsic.Control.Else
+	'Means we're continuing onto the next batch of same file. Start from variable value 
+		V.Local.sLastBatchNo.Set(V.Args.sLastBatchNo)
+		'Account for situation where last batch is 999
+		F.Intrinsic.Control.If(V.Local.sLastBatchNo, =, "999")
+			V.Local.sNextFMISBatchNo.Set("001")
+		F.Intrinsic.Control.Else
+			F.Intrinsic.Math.Add(V.Local.sLastBatchNo, 1, V.Local.sLastBatchNo)
+			F.Intrinsic.String.LPad(V.Local.sLastBatchNo, "0", 3, V.Local.sNextFMISBatchNo)
+		F.Intrinsic.Control.EndIf
+	F.Intrinsic.Control.EndIf
+	
+	F.ODBC.Connection!con.Close
+	V.Global.bConOpen.Set(False)
+	
+	F.Intrinsic.Variable.AddRV("sNextBatchNo", V.Local.sNextFMISBatchNo)
+F.Intrinsic.Control.Catch
+	F.Intrinsic.Control.CallSub(ErrorMsg,"Sub",V.Ambient.CurrentSubroutine,"ErrorNo",V.Ambient.ErrorNumber,"ErrorDesc",V.Ambient.ErrorDescription) 
+F.Intrinsic.Control.EndTry
+Program.Sub.GetNextBatchNo.End
+
+Program.Sub.GetNextDocNum.Start
+F.Intrinsic.Control.Try
+	V.Local.sRet.Declare
+	V.Local.sDocNum.Declare
+	V.Local.sDocSuff.Declare
+	V.Local.sPreviousInvoice.Declare
+	V.Local.sCurrentInvoice.Declare
+	V.Local.sLastDocNo.Declare
+	V.Local.sLastDocSuff.Declare
+	
+	F.ODBC.Connection!con.OpenCommonConnection 
+	V.Global.bConOpen.Set(True)
+	
+	'Means we're looking at first detail record of the file. Read from db table to know where to start numbering
+	F.Intrinsic.Control.If(V.Global.bReadNxtDoc)
+		'Get highest doc number last used 
+		F.ODBC.Connection!con.ExecuteAndReturn("select coalesce (max(DOC_NUM), 'NO-RET') from GCG_6891_BATCHES", V.Local.sRet)
+		F.Intrinsic.Control.If(V.Local.sRet, <>, "NO-RET")
+			F.Intrinsic.Math.Add(V.Local.sRet, 1, V.Local.sDocNum)
+			F.Intrinsic.String.LPad(V.Local.sDocNum, "0", 6, V.Local.sDocNum)
+		F.Intrinsic.Control.Else
+			V.Local.sDocNum.Set("000001")
+		F.Intrinsic.Control.EndIf
+		V.Local.sDocSuff.Set("001")
+	'Otherwise, we're looking at another detail record of the file, start numbering from the last used variable value
+	F.Intrinsic.Control.Else
+		V.Local.sLastDocNo.Set(V.Args.sLastDocNo)
+		V.Local.sLastDocSuff.Set(V.Args.sLastDocSuff)
+		V.Local.sPreviousInvoice.Set(V.Args.sPrevInvoice)
+		V.Local.sCurrentInvoice.Set(V.Args.sCurrentInvoice)
+		'Also add check to see if the previous record has same invoice. If so, don't increment doc num, but rather assign same doc num, increment doc suffix 
+		F.Intrinsic.Control.If(V.Local.sPreviousInvoice, =, V.Local.sCurrentInvoice)
+			V.Local.sDocNum.Set(V.Local.sLastDocNo)
+			F.Intrinsic.Math.Add(V.Local.sLastDocSuff, 1, V.Local.sDocSuff)
+			F.Intrinsic.String.LPad(V.Local.sDocSuff, "0", 3, V.Local.sDocSuff)
+		F.Intrinsic.Control.Else
+			F.Intrinsic.Math.Add(V.Local.sLastDocNo, 1, V.Local.sDocNum)
+			F.Intrinsic.String.LPad(V.Local.sDocNum, "0", 6, V.Local.sDocNum)
+			V.Local.sDocSuff.Set("001")
+		F.Intrinsic.Control.EndIf
+	F.Intrinsic.Control.EndIf
+	
+	F.ODBC.Connection!con.Close
+	V.Global.bConOpen.Set(False)
+	
+	F.Intrinsic.Variable.AddRV("sNextDocNum", V.Local.sDocNum)
+	F.Intrinsic.Variable.AddRV("sNextDocSuff", V.Local.sDocSuff)
+F.Intrinsic.Control.Catch
+	F.Intrinsic.Control.CallSub(ErrorMsg,"Sub",V.Ambient.CurrentSubroutine,"ErrorNo",V.Ambient.ErrorNumber,"ErrorDesc",V.Ambient.ErrorDescription)
+	F.Intrinsic.Control.End
+F.Intrinsic.Control.EndTry
+Program.Sub.GetNextDocNum.End
+
+Program.Sub.FTP_Upload.Start
+F.Intrinsic.Control.SetErrorHandler("Sub_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String)
+V.Local.bTableExist.Declare
+V.Local.sTemp.Declare
+V.Local.baValue.Declare(ByteArray)
+V.Local.sFile.Declare
+V.Local.sRemoteFile.Declare
+V.Local.sRet.Declare
+V.Local.bConnected.Declare
+V.Local.iCnt.Declare
+V.Local.sEmailScript.Declare
+
+'Verify Custom table w SFTP settings exists, and that it has credentials in it 
+	F.ODBC.Connection!con.OpenCommonConnection
+	V.Global.bConOpen.Set(True)
+	F.ODBC.Connection!con.TableExists("GCG_6891_SETTINGS", V.Local.bTableExist)
+	F.Intrinsic.Control.If(V.Local.bTableExist)
+		F.Data.DataTable.CreateFromSQL("dtFTPSettings", "con", "select * from GCG_6891_SETTINGS")
+		F.Intrinsic.Control.If(V.DataTable.dtFTPSettings.RowCount, =, 0)
+			F.Intrinsic.UI.Msgbox("No SFTP credential settings found. Please configure by logging in as an admin user and navigating to System Support > Administration > 6891 FTP Credentials Maintenance.", "Warning")
+			F.Intrinsic.Control.End
+		F.Intrinsic.Control.EndIf
+	F.Intrinsic.Control.Else
+		F.Intrinsic.UI.Msgbox("Table GCG_6891_SETTINGS does not exist. Configure SFTP settings by logging in as an admin user and navigating to System Support > Administration > 6891 FTP Credentials Maintenance.", "Warning")
+		F.Intrinsic.Control.End
+	F.Intrinsic.Control.EndIf
+	F.ODBC.Connection!con.Close
+	V.Global.bConOpen.Set(False)
+	
+	'Grab credentials and set to global variables 
+	V.Local.sTemp.Set(V.DataTable.dtFTPSettings(0).REMOTEHOST!FieldValTrim)
+	F.Intrinsic.String.ConvertString2BA(V.Local.sTemp, V.Local.baValue)
+	F.Global.Encryption.Decrypt(V.Local.baValue,v.Local.sTemp)
+	V.Global.sRemoteHost.Set(V.Local.sTemp.Trim)
+	
+	V.Local.sTemp.Set(V.DataTable.dtFTPSettings(0).REMOTEUSER!FieldValTrim)
+	F.Intrinsic.String.ConvertString2BA(V.Local.sTemp, V.Local.baValue)
+	F.Global.Encryption.Decrypt(V.Local.baValue,v.Local.sTemp)
+	V.Global.sRemoteUser.Set(V.Local.sTemp.Trim)
+	
+	V.Local.sTemp.Set(V.DataTable.dtFTPSettings(0).REMOTEPASSWORD!FieldValTrim)
+	F.Intrinsic.String.ConvertString2BA(V.Local.sTemp, V.Local.baValue)
+	F.Global.Encryption.Decrypt(V.Local.baValue,v.Local.sTemp)
+	V.Global.sRemotePass.Set(V.Local.sTemp.Trim)
+	
+	V.Local.sTemp.Set(V.DataTable.dtFTPSettings(0).REMOTEPORT!FieldValTrim)
+	F.Intrinsic.String.ConvertString2BA(V.Local.sTemp, V.Local.baValue)
+	F.Global.Encryption.Decrypt(V.Local.baValue,v.Local.sTemp)
+	V.Global.sRemotePort.Set(V.Local.sTemp.Trim)
+	
+	V.Local.sTemp.Set(v.DataTable.dtFTPSettings(0).REMOTEPATH!FieldValTrim)
+	F.Intrinsic.String.ConvertString2BA(V.Local.sTemp, V.Local.baValue)
+	F.Global.Encryption.Decrypt(V.Local.baValue,v.Local.sTemp)
+	V.Global.sRemotePath.Set(V.Local.sTemp.Trim)
+	
+	V.Local.sFile.Set(V.Args.sFile)
+'	F.Intrinsic.String.Build("{0}\ADCJOBST.txt", V.Caller.FilesDir, V.Local.sEmailScript)
+'	F.Intrinsic.String.Split(V.Local.sFile, "\", V.Local.sRet)
+
+	V.Local.sRemoteFile.Set(V.Global.sRemotePath)
+
+	'Attempt to log onto FTP server (using FTPS due to enhanced secruity certificates)
+	F.Intrinsic.Control.Try
+		F.Communication.FTPS.ReadProperty("connected", V.Local.bConnected)
+		
+		F.Intrinsic.Control.If(V.Local.bConnected.Not)
+			F.Communication.FTPS.SetProperty("remoteHost", V.Global.sRemoteHost.Trim)
+			F.Communication.FTPS.SetProperty("User", V.Global.sRemoteUser.Trim)
+			F.Communication.FTPS.SetProperty("Password", V.Global.sRemotePass.Trim)
+			F.Communication.FTPS.SetProperty("remotePort", V.Global.sRemotePort.Trim)
+			F.Communication.FTPS.Logon
+		F.Intrinsic.Control.EndIf
+		
+	F.Intrinsic.Control.Catch
+		F.Communication.SFTP.Logoff
+		F.Intrinsic.UI.Msgbox("Connection Failed")
+		F.Intrinsic.Control.CallSub(ErrorMsg,"Sub",V.Ambient.CurrentSubroutine,"ErrorNo",V.Ambient.ErrorNumber,"ErrorDesc",V.Ambient.ErrorDescription) 
+		F.Intrinsic.Control.End
+	F.Intrinsic.Control.EndTry
+	
+	'Now depending on how the sub was called, upload the script file provided by customer that will take care of emailing the appropriate users and/or the fmis batch file
+
+	F.Communication.FTPS.SetProperty("RemoteFile", V.Local.sRemoteFile)
+	F.Communication.FTPS.SetProperty("LocalFile", V.Local.sFile)
+	F.Communication.FTPS.Upload
+
+	
+	F.Communication.FTPS.Logoff
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("Sub_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	Function.Intrinsic.String.Concat("Project: GCG_6891_FMISTransGrid",V.Ambient.Newline,V.Ambient.Newline,"Subroutine: ",V.Ambient.CurrentSubroutine,V.Ambient.NewLine,"Error Occurred ",V.Ambient.ErrorNumber," with description ",V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	F.Intrinsic.Control.End
+Function.Intrinsic.Control.EndIf
+Program.Sub.FTP_Upload.End
+
+Program.Sub.SendMsg.Start
+F.Intrinsic.Control.Try
+	V.Local.sMsgFile.Declare
+	V.Local.bFileExists.Declare
+	V.Local.sErrorMsg.Declare
+	V.Local.iUserS.Declare
+	V.Local.sUsersR.Declare
+	V.Local.sMsg.Declare
+	V.Local.iRet.Declare
+	V.Local.i.Declare
+	V.Local.iUserIDR.Declare
+	
+	F.Intrinsic.String.Build("{0}\GCG_6891_MsgList.txt", V.Caller.FilesDir, V.Local.sMsgFile)
+	F.Intrinsic.File.Exists(V.Local.sMsgFile, V.Local.bFileExists)
+	F.Intrinsic.Control.If(V.Local.bFileExists.Not)
+		F.Intrinsic.String.Build("Please create file '{0}'{1}Ensure that file contains list of all Global Shop Usernames that should receive FMIS Transmission Confirmation File, delimited by a newline.", V.Local.sMsgFile, V.Ambient.NewLine, V.Local.sErrorMsg)
+		F.Intrinsic.UI.Msgbox(V.Local.sErrorMsg, "Message List File Not Found")
+		F.Intrinsic.Control.ExitSub
+	F.Intrinsic.Control.EndIf
+	
+	'Set up sender and create message
+	
+	F.Global.Security.GetUserId(V.Caller.User, V.Caller.CompanyCode, V.Local.iUserS)
+	F.Intrinsic.String.Build("FMIS Batch File: {0} was successfully transmitted at {1}", V.Args.sLocalFileName, V.Ambient.Now, V.Local.sMsg)
+	F.Global.Messaging.InternalMessageCreate(-1, V.Ambient.Date, V.Local.iUserS, "FMIS Batch File Successfully Transmitted", V.Local.sMsg, V.Local.iRet)
+	'Read file containing all users that will be receiving the message and send one by one (limitation of the function)
+	F.Intrinsic.File.File2String(V.Local.sMsgFile, V.Local.sUsersR)
+	F.Intrinsic.String.Split(V.Local.sUsersR, V.Ambient.NewLine, V.Local.sUsersR)
+	F.Intrinsic.Control.For(V.Local.i, 0, V.Local.sUsersR.UBound, 1)
+		F.Intrinsic.Control.If(V.Local.sUsersR(V.Local.i), <>, "")
+			F.Global.Security.GetUserId(V.Local.sUsersR(V.Local.i), V.Caller.CompanyCode, V.Local.iUserIDR)
+			F.Global.Messaging.InternalMessageQueueToUser(V.Local.iUserIDR, V.Local.iRet)
+		F.Intrinsic.Control.EndIf
+	F.Intrinsic.Control.Next(V.Local.i)
+	
+
+F.Intrinsic.Control.Catch
+	F.Intrinsic.Control.CallSub(ErrorMsg,"Sub",V.Ambient.CurrentSubroutine,"ErrorNo",V.Ambient.ErrorNumber,"ErrorDesc",V.Ambient.ErrorDescription)
+F.Intrinsic.Control.EndTry
+Program.Sub.SendMsg.End
+Program.Sub.cmdBrowse_Click.Start
+F.Intrinsic.Control.Try
+	V.Local.sFileDir.Declare
+	V.Local.sRetFile.Declare
+
+	'This subroutine populates text box with a fmsbatch.txt file for manual upload. This function filters the directory to only shows those file types 
+	F.Intrinsic.String.Build("{0}\6891_Batch_Files\", V.Caller.FilesDir, V.Local.sFileDir)
+	F.Intrinsic.UI.ShowOpenFileDialog(V.Local.sFileDir, "Text Files|fmsbatch*.txt", V.Local.sRetFile)
+	
+	F.Intrinsic.Control.If(V.Local.sRetFile, <>, "***CANCEL***")
+		Gui.frmFMIS.txtFile.Text(V.Local.sRetFile)
+		V.Global.bManualUpload.Set(True)
+	F.Intrinsic.Control.EndIf
+F.Intrinsic.Control.Catch
+	F.Intrinsic.Control.CallSub(ErrorMsg,"Sub",V.Ambient.CurrentSubroutine,"ErrorNo",V.Ambient.ErrorNumber,"ErrorDesc",V.Ambient.ErrorDescription)
+F.Intrinsic.Control.EndTry
+Program.Sub.cmdBrowse_Click.End
+
+Program.Sub.SetContextMenu.Start
+F.Intrinsic.Control.Try
+	Gui.frmFMIS..ContextMenuCreate("ctxSelAll")
+	Gui.frmFMIS..ContextMenuAddItem("ctxSelAll", "SelAll", 0, "Toggle Select Batch/Invoice")
+	Gui.frmFMIS..ContextMenuSetItemEventHandler("ctxSelAll", "SelAll", "SelectAllBatchInvoice")
+F.Intrinsic.Control.Catch
+	F.Intrinsic.Control.CallSub(ErrorMsg,"Sub",V.Ambient.CurrentSubroutine,"ErrorNo",V.Ambient.ErrorNumber,"ErrorDesc",V.Ambient.ErrorDescription)
+F.Intrinsic.Control.EndTry
+Program.Sub.SetContextMenu.End
+
+Program.Sub.SelectAllBatchInvoice.Start
+F.Intrinsic.Control.Try
+	'This sub called from context menu. Given the row ordinal from the click event that the user clicked on, determines corresponding invoice number and company code
+	'Subroutine will then find all ordinals in the datatable that match those values, and toggle their select box to true/false based on intial state of select box of the row that was right clicked on
+	V.Local.sInvoice.Declare
+	V.Local.sCompanyCode.Declare
+	V.Local.bBoxSelected.Declare
+	V.Local.sSelectedOrdinals.Declare
+	V.Local.sFilter.Declare
+	V.Local.i.Declare
+	
+	V.Local.sSelectedOrdinals.Redim(0, 0)
+	Gui.frmFMIS.GsGCBatches.GetCellValueByColumnName("gvBatches", "Select", V.Global.iSelectedRowIndex, V.Local.bBoxSelected)
+	Gui.frmFMIS.GsGCBatches.GetCellValueByColumnName("gvBatches", "INVOICE", V.Global.iSelectedRowIndex, V.Local.sInvoice)
+	Gui.frmFMIS.GsGCBatches.GetCellValueByColumnName("gvBatches", "COMPANY_CODE", V.Global.iSelectedRowIndex, V.Local.sCompanyCode)
+
+	F.Intrinsic.String.Build("INVOICE = '{0}' and COMPANY_CODE = '{1}'", V.Local.sInvoice.Trim, V.Local.sCompanyCode.Trim, V.Local.sFilter)
+	F.Data.DataTable.Select("dtDataAll", V.Local.sFilter, V.Local.sSelectedOrdinals)
+	F.Intrinsic.Control.If(V.Local.sSelectedOrdinals, <>, "")
+		F.Intrinsic.String.Split(V.Local.sSelectedOrdinals, "*!*", V.Local.sSelectedOrdinals)
+		F.Intrinsic.Control.For(V.Local.i, 0, V.Local.sSelectedOrdinals.UBound, 1)
+			'Unselect if previously selected, and vice versa
+				F.Data.DataTable.SetValue("dtDataAll", V.Local.sSelectedOrdinals(V.Local.i), "Select", V.Local.bBoxSelected.Not)
+		F.Intrinsic.Control.Next(V.Local.i)
+	F.Intrinsic.Control.EndIf
+
+
+F.Intrinsic.Control.Catch
+	F.Intrinsic.Control.CallSub(ErrorMsg,"Sub",V.Ambient.CurrentSubroutine,"ErrorNo",V.Ambient.ErrorNumber,"ErrorDesc",V.Ambient.ErrorDescription)
+F.Intrinsic.Control.EndTry
+Program.Sub.SelectAllBatchInvoice.End
+Program.Sub.chkDateOverride_Change.Start
+F.Intrinsic.Control.Try
+	
+	Gui.frmFMIS.dtpOverride.Enabled(V.Screen.frmFMIS!chkDateOverride.Value)
+
+F.Intrinsic.Control.Catch
+	F.Intrinsic.Control.CallSub(ErrorMsg,"Sub",V.Ambient.CurrentSubroutine,"ErrorNo",V.Ambient.ErrorNumber,"ErrorDesc",V.Ambient.ErrorDescription)
+F.Intrinsic.Control.EndTry
+Program.Sub.chkDateOverride_Change.End
+
+Program.Sub.Comments.Start
+${$5$}$20.1.8474.24170$}$1
+${$6$}$bmedina$}$20230926114621603$}$kOipCrsyLBVj2KoSwkcdK23ChxGVcBlExgR7YHc/EOpoNPphA/7T8PsSZo085yEiPNQnfXu0gV0=
+Program.Sub.Comments.End
