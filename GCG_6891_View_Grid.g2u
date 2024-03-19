@@ -1,0 +1,329 @@
+﻿Program.Sub.ScreenSU.Start
+Gui.frmFMIS..Create(BaseForm)
+Gui.frmFMIS..Caption("Invoice Batches Transmitted to FMIS")
+Gui.frmFMIS..Size(16530,10800)
+Gui.frmFMIS..MinX(14200)
+Gui.frmFMIS..MinY(4000)
+Gui.frmFMIS..Position(0,0)
+Gui.frmFMIS..AlwaysOnTop(False)
+Gui.frmFMIS..FontName("Tahoma")
+Gui.frmFMIS..FontSize(8.25)
+Gui.frmFMIS..ControlBox(True)
+Gui.frmFMIS..MaxButton(True)
+Gui.frmFMIS..MinButton(True)
+Gui.frmFMIS..MousePointer(0)
+Gui.frmFMIS..Moveable(True)
+Gui.frmFMIS..Sizeable(True)
+Gui.frmFMIS..ShowInTaskBar(True)
+Gui.frmFMIS..TitleBar(True)
+Gui.frmFMIS..Event(UnLoad,frmFMIS_UnLoad)
+Gui.frmFMIS.GsGCRecords.Create(GsGridControl)
+Gui.frmFMIS.GsGCRecords.Enabled(True)
+Gui.frmFMIS.GsGCRecords.Visible(True)
+Gui.frmFMIS.GsGCRecords.Zorder(0)
+Gui.frmFMIS.GsGCRecords.Size(16215,8835)
+Gui.frmFMIS.GsGCRecords.Position(150,1245)
+Gui.frmFMIS.GsGCRecords.Anchor(15)
+Gui.frmFMIS.cmdRefresh.Create(Button)
+Gui.frmFMIS.cmdRefresh.Enabled(True)
+Gui.frmFMIS.cmdRefresh.Visible(True)
+Gui.frmFMIS.cmdRefresh.Zorder(0)
+Gui.frmFMIS.cmdRefresh.Size(765,345)
+Gui.frmFMIS.cmdRefresh.Position(225,90)
+Gui.frmFMIS.cmdRefresh.Caption("Refresh")
+Gui.frmFMIS.cmdRefresh.FontName("Tahoma")
+Gui.frmFMIS.cmdRefresh.FontSize(8.25)
+Gui.frmFMIS.cmdRefresh.Event(Click,cmdRefresh_Click)
+Gui.frmFMIS.picGSSLogo.Create(PictureBox)
+Gui.frmFMIS.picGSSLogo.Enabled(True)
+Gui.frmFMIS.picGSSLogo.Visible(True)
+Gui.frmFMIS.picGSSLogo.Zorder(0)
+Gui.frmFMIS.picGSSLogo.Size(4125,960)
+Gui.frmFMIS.picGSSLogo.Position(5925,90)
+Gui.frmFMIS.picGSSLogo.Anchor(1)
+Program.Sub.ScreenSU.End
+
+Program.Sub.Preflight.Start
+V.Global.bConOpen.Declare(Boolean, False)
+V.Global.iARCID.Declare
+Program.Sub.Preflight.End
+
+Program.Sub.Main.Start
+'Brandon Medina 
+'Customer: Maryland Correctional Enterprises
+'Quote: 13575
+'Desc: FMIS Integration. This is the grid that shows what batches have been transmitted to FMIS by the main transmission grid. Grid view displays all posted AP invoice batches that have successfully been sent to FMIS 
+'This is view only, with the only option being to export the grid to excel 
+F.Intrinsic.Control.Try
+	V.Local.bTableExist.Declare
+	V.Local.iRet.Declare
+	V.Local.sGssLogo.Declare
+	
+	F.Intrinsic.String.Build("{0}\ART\GAB_GSS_Logo_Green_Dash.png",V.Caller.GlobalDir,V.Local.sGssLogo)
+	Gui.frmFMIS.picGSSLogo.Picture(V.Local.sGssLogo)
+	
+	F.Intrinsic.Control.CallSub(SetARCID)
+	F.Intrinsic.Control.CallSub(CreateCustomTable)
+	F.Intrinsic.Control.CallSub(SetContextMenu)
+	Gui.frmFMIS..Show
+	F.Intrinsic.Control.CallSub(LoadData)
+
+F.Intrinsic.Control.Catch
+	F.Intrinsic.Control.CallSub(ErrorMsg,"Sub",V.Ambient.CurrentSubroutine,"ErrorNo",V.Ambient.ErrorNumber,"ErrorDesc",V.Ambient.ErrorDescription)
+F.Intrinsic.Control.EndTry
+Program.Sub.Main.End
+
+Program.Sub.ErrorMsg.Start
+V.Local.sError.Declare
+	Gui.frmFMIS.GsGCRecords.HideWait
+	F.Intrinsic.Control.UnBlockEvents
+	F.Intrinsic.String.Build("Project: {0}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}", V.Caller.ScriptFile, V.Ambient.NewLine, V.Args.sub, V.Args.ErrorNo, V.Args.ErrorDesc, V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+F.Intrinsic.Control.End
+Program.Sub.ErrorMsg.End
+Program.Sub.frmFMIS_UnLoad.Start
+F.Intrinsic.Control.End
+Program.Sub.frmFMIS_UnLoad.End
+Program.Sub.cmdRefresh_Click.Start
+F.Intrinsic.Control.Try
+	F.Intrinsic.Control.CallSub(LoadData)
+	
+F.Intrinsic.Control.Catch
+	F.Intrinsic.Control.CallSub(ErrorMsg,"Sub",V.Ambient.CurrentSubroutine,"ErrorNo",V.Ambient.ErrorNumber,"ErrorDesc",V.Ambient.ErrorDescription) 
+F.Intrinsic.Control.EndTry
+Program.Sub.cmdRefresh_Click.End
+
+Program.Sub.CreateCustomTable.Start
+F.Intrinsic.Control.Try
+	V.Local.bTableExists.Declare(Boolean, False)
+	V.Local.sSQL.Declare
+	
+	F.ODBC.Connection!con.OpenCommonConnection
+	V.Global.bConOpen.Set(True)
+	'First table is for determining which records have already been transmitted. Should have been created if main trans grid has been run. If not, create here so script doesn't error 
+	F.ODBC.Connection!con.TableExists("GCG_6891_BATCHES", V.Local.bTableExists)
+	
+	F.Intrinsic.Control.If(V.Local.bTableExists.Not)
+		F.ODBC.Connection!con.Execute("create table GCG_6891_BATCHES (GSS_BATCH CHAR(5), GSS_BATCH_LN NUMERIC(5,0), COMP_CODE CHAR(3), POST_DATE DATE, VENDOR_NO CHAR(6), VENDOR_NAME CHAR(30), INVOICE_NO CHAR(14), INVOICE_DATE DATE, GL_ACCOUNT CHAR(15), INVOICE_AMT NUMERIC(16, 2), PO_NUM CHAR(7), PO_LINE CHAR(3), FMIS_BATCH CHAR(3), FMIS_BATCH_SEQ CHAR(5), TRANS_DATE DATE, DOC_NUM CHAR(6), DOC_NUM_SUFF CHAR(3), FILE_TRANSFERRED CHAR(26), REUPLOAD_FLAG BIT)")
+	F.Intrinsic.Control.EndIf
+		
+	F.ODBC.Connection!con.Close
+	V.Global.bConOpen.Set(False)
+	
+F.Intrinsic.Control.Catch
+	F.Intrinsic.Control.CallSub(ErrorMsg,"Sub",V.Ambient.CurrentSubroutine,"ErrorNo",V.Ambient.ErrorNumber,"ErrorDesc",V.Ambient.ErrorDescription) 
+F.Intrinsic.Control.EndTry
+Program.Sub.CreateCustomTable.End
+
+Program.Sub.LoadData.Start
+F.Intrinsic.Control.Try
+	V.Local.iCnt.Declare
+	V.Local.sSQL.Declare
+	V.Local.sCompanies.Declare
+	V.Local.sDatabase.Declare
+	V.Local.i.Declare
+	V.Local.sDataTableName.Declare
+	V.Local.sDataTables.Declare
+	V.Local.sRet.Declare
+	V.Local.bDictExists.Declare
+	V.Local.dErrorDate.Declare
+	
+	V.Local.dErrorDate.Set("1900-01-01")
+	
+	F.Intrinsic.Control.If(V.DataTable.dtDataAll.Exists)
+		F.Data.DataTable.Close("dtDataAll")
+	F.Intrinsic.Control.EndIf
+		
+	F.Intrinsic.Control.BlockEvents
+	Gui.frmFMIS.GsGCRecords.InvokeWait("Loading...","Please Wait",False)
+	
+	F.ODBC.Connection!conx.OpenCommonConnection
+	V.Global.bConOpen.Set(True)
+	F.ODBC.Connection!conx.ExecuteAndReturn("select * from GCG_6891_BATCHES", V.Local.sCompanies)
+	F.Data.DataTable.CreateFromSQL("dtDataAll", "conx", "select * from GCG_6891_BATCHES", True)
+	
+	'Add new mail code and service date column
+	'Create dictionaries to fill out new columns containing mail code & Service Date. 
+	F.Data.DataTable.AddExpressionColumn("dtDataAll", "MAIL_CODE_MATCH", "String", "trim(GSS_BATCH) + trim(INVOICE_NO)")
+	F.Data.Datatable.AddColumn("dtDataAll", "MAIL_CODE", "String")
+	F.Data.DataTable.AddColumn("dtDataAll", "SERV_DATE", "Date")
+	
+	V.Local.sSQL.Set("select ltrim(rtrim(GSS_BATCH)) + ltrim(rtrim(INVOICE_NO)) as MATCH, MAIL_CODE from GCG_6891_MAIL_CODE")
+	F.Data.Dictionary.Exists("dictMailCode", V.Local.bDictExists)
+	F.Intrinsic.Control.If(V.Local.bDictExists)
+		F.Data.Dictionary.Close("dictMailCode")
+	F.Intrinsic.Control.EndIf
+	F.Data.Dictionary.CreateFromSQL("dictMailCode", "conx", V.Local.sSQL)
+	F.Data.Dictionary.SetDefaultReturn("dictMailCode", "No Mail Code")
+	
+	V.Local.sSQL.Set("select ltrim(rtrim(GSS_BATCH)) + ltrim(rtrim(INVOICE_NO)) as MATCH, SERV_DATE from GCG_6891_MAIL_CODE")
+	F.Data.Dictionary.Exists("dictServDate", V.Local.bDictExists)
+	F.Intrinsic.Control.If(V.Local.bDictExists)
+		F.Data.Dictionary.Close("dictServDate")
+	F.Intrinsic.Control.EndIf
+	F.Data.Dictionary.CreateFromSQL("dictServDate", "conx", V.Local.sSQL)
+	F.Data.Dictionary.SetDefaultReturn("dictServDate", V.Local.dErrorDate)
+	
+	'Fill out based on GSS_BATCH and INVOICE_NO. Thsis was added after original delivery per customer request 
+	F.Data.DataTable.FillFromDictionary("dtDataAll", "dictMailCode", "MAIL_CODE_MATCH", "MAIL_CODE")
+	F.Data.DataTable.FillFromDictionary("dtDataAll", "dictServDate", "MAIL_CODE_MATCH", "SERV_DATE")
+	F.Data.DataTable.RemoveColumn("dtDataAll", "MAIL_CODE_MATCH")
+	
+	F.ODBC.Connection!conx.Close
+	V.Global.bConOpen.Set(False)
+	
+	F.Intrinsic.Control.CallSub(LoadGV,"DT", "dtDataAll", "GV", "gvBatches", "GSGC", "GsGCRecords", "FRM", "frmFMIS")
+	
+	Gui.frmFMIS.GsGCRecords.HideWait
+	F.Intrinsic.Control.UnBlockEvents
+	
+F.Intrinsic.Control.Catch
+	F.Intrinsic.Control.CallSub(ErrorMsg, "Sub", V.Ambient.CurrentSubroutine, "ErrorNo", V.Ambient.ErrorNumber, "ErrorDesc", V.Ambient.ErrorDescription)
+	F.Intrinsic.Control.End
+F.Intrinsic.Control.EndTry
+Program.Sub.LoadData.End
+
+Program.Sub.LoadGV.Start
+F.Intrinsic.Control.Try
+	V.Local.iCnt.Declare
+	V.Local.sFieldNames.Declare
+	V.Local.sColumns.Declare
+	V.Local.bRet.Declare
+	V.Local.sFormattedCaption.Declare
+	
+	Gui.[V.Args.FRM].[V.Args.GSGC].AddGridViewFromDataTable(V.Args.GV,V.Args.DT)
+	Gui.[V.Args.FRM].[V.Args.GSGC].SuspendLayout()
+	Gui.[V.Args.FRM].[V.Args.GSGC].SetGridViewProperty(V.Args.GV,"AllowSort",True)
+	Gui.[V.Args.FRM].[V.Args.GSGC].SetGridViewProperty(V.Args.GV,"AllowFilter",True)
+	Gui.[V.Args.FRM].[V.Args.GSGC].SetGridViewProperty(V.Args.GV,"OptionsViewShowGroupPanel",True)
+
+	'Loop through columns names by using the V.DataTable.dtName.FieldNames
+	F.Intrinsic.String.Concat("",V.DataTable.[V.Args.DT].FieldNames,V.Local.sFieldNames)
+	F.Intrinsic.String.Split(V.Local.sFieldNames,"*!*",V.Local.sColumns)
+	F.Intrinsic.Control.For(V.Local.iCnt,0,V.Local.sColumns.UBound,1)
+	
+		'Caption Formatting...  returns V.Args.sFromattedCaption with the formatted caption
+		F.Intrinsic.Control.CallSub(FormatCaption,"sCaption",V.Local.sColumns(V.Local.iCnt))
+		
+		'Main Properties
+		Gui.[V.Args.FRM].[V.Args.GSGC].SetColumnProperty(V.Args.GV,V.Local.sColumns(V.Local.iCnt),"VisibleIndex",V.Local.iCnt)
+		Gui.[V.Args.FRM].[V.Args.GSGC].SetColumnProperty(V.Args.GV,V.Local.sColumns(V.Local.iCnt),"HeaderFontBold",True)
+		Gui.[V.Args.FRM].[V.Args.GSGC].SetColumnProperty(V.Args.GV,V.Local.sColumns(V.Local.iCnt),"HeaderHAlignment","Near")
+		Gui.[V.Args.FRM].[V.Args.GSGC].SetColumnProperty(V.Args.GV,V.Local.sColumns(V.Local.iCnt),"CellHAlignment","Near")
+		Gui.[V.Args.FRM].[V.Args.GSGC].SetColumnProperty(V.Args.GV,V.Local.sColumns(V.Local.iCnt),"ReadOnly",True)
+		Gui.[V.Args.FRM].[V.Args.GSGC].SetColumnProperty(V.Args.GV,V.Local.sColumns(V.Local.iCnt),"AllowEdit",False)
+		Gui.[V.Args.FRM].[V.Args.GSGC].SetColumnProperty(V.Args.GV,V.Local.sColumns(V.Local.iCnt),"Caption",V.Args.sFormattedCaption)
+		
+		'If this is a date column, format the date and right align
+		F.Intrinsic.String.IsInString(V.Args.sFormattedCaption,"Date",False,V.Local.bRet)
+		F.Intrinsic.Control.If(V.Local.bRet)
+			Gui.[V.Args.FRM].[V.Args.GSGC].SetColumnProperty(V.Args.GV,V.Local.sColumns(V.Local.iCnt),"DisplayCustomDatetime","d")
+			Gui.[V.Args.FRM].[V.Args.GSGC].SetColumnProperty(V.Args.GV,V.Local.sColumns(V.Local.iCnt),"CellHAlignment","Far")
+		F.Intrinsic.Control.EndIf
+
+	F.Intrinsic.Control.Next(V.Local.iCnt)
+	
+	
+	Gui.[V.Args.FRM].[V.Args.GSGC].BestFitColumns(V.Args.GV)
+	
+	Gui.[V.Args.FRM].[V.Args.GSGC].ResumeLayout()
+	
+	Gui.[V.Args.FRM].[V.Args.GSGC].MainView(V.Args.GV)
+	
+F.Intrinsic.Control.Catch
+	F.Intrinsic.Control.CallSub(ErrorMsg, "Sub", V.Ambient.CurrentSubroutine, "ErrorNo", V.Ambient.ErrorNumber, "ErrorDesc", V.Ambient.ErrorDescription)
+F.Intrinsic.Control.EndTry
+Program.Sub.LoadGV.End
+
+Program.Sub.SetContextMenu.Start
+F.Intrinsic.Control.Try
+	Gui.frmFMIS..ContextMenuCreate("ctxView")
+	Gui.frmFMIS.GsGCRecords.ContextMenuAttach("ctxView")
+	Gui.frmFMIS..ContextMenuAddItem("ctxView", "ExportData", 0, "Export Data")
+	Gui.frmFMIS..ContextMenuAddItem("ctxView", "Refresh", 0, "Refresh")
+	
+	Gui.frmFMIS..ContextMenuSetItemEventHandler("ctxView", "ExportData", "ExportGrid")
+	Gui.frmFMIS..ContextMenuSetItemEventHandler("ctxView", "Refresh", "cmdRefresh_Click")
+F.Intrinsic.Control.Catch
+	F.Intrinsic.Control.CallSub(ErrorMsg, "Sub", V.Ambient.CurrentSubroutine, "ErrorNo", V.Ambient.ErrorNumber, "ErrorDesc", V.Ambient.ErrorDescription)
+F.Intrinsic.Control.EndTry
+Program.Sub.SetContextMenu.End
+
+Program.Sub.ExportGrid.Start
+F.Intrinsic.Control.Try
+	V.Local.bExcel.Declare
+	V.Local.sExt.Declare
+	V.Local.sControl.Declare
+	V.Local.sFileExport.Declare
+	V.Local.bFileLocked.Declare
+	V.Local.sMsg.Declare
+	V.Local.sGridControlList.Declare
+	V.Local.sCurrentControlList.Declare
+	V.Local.sFormName.Declare
+	V.Local.sGridControlName.Declare
+	V.Local.iCnt.Declare
+	
+	F.Automation.MSExcel.CheckPresence(V.Local.bExcel)
+	F.Intrinsic.Control.If(V.Local.bExcel)
+		V.Local.sExt.Set("xlsx")
+	F.Intrinsic.Control.Else
+		V.Local.sExt.Set("csv")
+	F.Intrinsic.Control.EndIf
+	
+	F.Intrinsic.String.Split("frmFMIS*!*GsGCRecords","#$#",V.Local.sGridControlList)
+	F.Intrinsic.Control.For(V.Local.iCnt,0,V.Local.sGridControlList.UBound,1)
+		F.Intrinsic.String.Split(V.Local.sGridControlList(V.Local.iCnt),"*!*",V.Local.sCurrentControlList)
+		V.Local.sFormName.Set(V.Local.sCurrentControlList(0))
+		V.Local.sGridControlName.Set(V.Local.sCurrentControlList(1))
+		
+		F.Intrinsic.String.Build("{0}\GAB_{1}_{2}_Export.{3}",V.Caller.LocalGssTempDir,V.Global.iARCID,V.Local.sGridControlName,V.Local.sExt,V.Local.sFileExport)
+		F.Intrinsic.File.IsFileLocked(V.Local.sFileExport,V.Local.bFileLocked)
+		F.Intrinsic.Control.If(V.Local.bFileLocked)
+			F.Intrinsic.String.Build("File is already open. Please close and export again.{0}File: {1}",V.Ambient.NewLine,V.Local.sFileExport,V.Local.sMsg)
+			F.Intrinsic.UI.Msgbox(V.Local.sMsg,"File In Use")
+		F.Intrinsic.Control.Else
+			Gui.[V.Local.sFormName].[V.Local.sGridControlName].Export(V.Local.sFileExport,V.Local.sExt)
+			F.Intrinsic.Task.ShellExec(0,"",V.Local.sFileExport,"","",1)
+		F.Intrinsic.Control.EndIf
+	
+	F.Intrinsic.Control.Next(V.Local.iCnt)
+F.Intrinsic.Control.Catch
+	F.Intrinsic.Control.CallSub(ErrorMsg, "Sub", V.Ambient.CurrentSubroutine, "ErrorNo", V.Ambient.ErrorNumber, "ErrorDesc", V.Ambient.ErrorDescription)
+F.Intrinsic.Control.EndTry
+Program.Sub.ExportGrid.End
+Program.Sub.SetARCID.Start
+F.Intrinsic.Control.Try
+	V.Local.sFile.Declare
+	V.Local.sName.Declare
+	V.Local.sNameSplit.Declare
+	
+	F.Intrinsic.String.Split(V.Caller.ScriptFile,"\",V.Local.sFile)
+	F.Intrinsic.String.Split(V.Local.sFile(V.Local.sFile.UBound),".",V.Local.sName)
+	F.Intrinsic.String.Split(V.Local.sName,"_",V.Local.sNameSplit)
+	V.Global.iARCID.Set(V.Local.sNameSplit(1).Long)
+	
+F.Intrinsic.Control.Catch
+	F.Intrinsic.Control.CallSub(ErrorMsg,"Sub",V.Ambient.CurrentSubroutine,"ErrorNo",V.Ambient.ErrorNumber,"ErrorDesc",V.Ambient.ErrorDescription) 
+F.Intrinsic.Control.EndTry
+Program.Sub.SetARCID.End
+Program.Sub.FormatCaption.Start
+	'Sub just removes underscores of captions passed to it and makes columns proper case. Returns RV where formatted 
+	V.Local.sRet.Declare
+	
+	V.Local.sRet.Set(V.Args.sCaption)
+	
+	F.Intrinsic.String.Replace(V.Local.sRet,"_"," ",V.Local.sRet)
+	
+	
+	F.Intrinsic.Control.If(V.Local.sRet.Length,>,2)
+		V.Local.sRet.Set(V.Local.sRet.PCase)
+	F.Intrinsic.Control.EndIf
+	
+	F.Intrinsic.Variable.AddRV("sFormattedCaption",V.Local.sRet)
+
+Program.Sub.FormatCaption.End
+
+Program.Sub.Comments.Start
+${$5$}$20.1.8286.22461$}$1
+${$6$}$bmedina$}$20221128221138847$}$kOipCrsyLBVj2KoSwkcdK23ChxGVcBlEY0fsvcB8J0S3BEJi9mOmKnYiXJj9hFSGn1SBzZFFNKU=
+Program.Sub.Comments.End
