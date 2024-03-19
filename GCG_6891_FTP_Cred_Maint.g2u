@@ -1,0 +1,284 @@
+﻿Program.Sub.ScreenSU.Start
+Gui.frmFTP..Create(BaseForm)
+Gui.frmFTP..Caption("FTP Credentials Maintenance: FMIS")
+Gui.frmFTP..Size(8175,2970)
+Gui.frmFTP..MinX(0)
+Gui.frmFTP..MinY(0)
+Gui.frmFTP..Position(0,0)
+Gui.frmFTP..AlwaysOnTop(False)
+Gui.frmFTP..FontName("Tahoma")
+Gui.frmFTP..FontSize(8.25)
+Gui.frmFTP..ControlBox(True)
+Gui.frmFTP..MaxButton(True)
+Gui.frmFTP..MinButton(True)
+Gui.frmFTP..MousePointer(0)
+Gui.frmFTP..Moveable(True)
+Gui.frmFTP..Sizeable(True)
+Gui.frmFTP..ShowInTaskBar(True)
+Gui.frmFTP..TitleBar(True)
+Gui.frmFTP..Event(UnLoad,frmFTP_UnLoad)
+Gui.frmFTP.txtRemoteHost.Create(TextBox,"",True,4305,300,0,1590,240,True,0,"Tahoma",8.25,,1)
+Gui.frmFTP.lblUser.Create(Label,"User:",True,390,195,0,195,720,True,0,"Tahoma",8.25,,0,0)
+Gui.frmFTP.lblUser.BorderStyle(0)
+Gui.frmFTP.txtUser.Create(TextBox,"",True,4305,300,0,1590,660,True,0,"Tahoma",8.25,,1)
+Gui.frmFTP.txtPassword.Create(TextBox,"",True,4305,300,0,1590,1080,True,0,"Tahoma",8.25,,1)
+Gui.frmFTP.txtPassword.PasswordChar("●")
+Gui.frmFTP.lblRemotePort.Create(Label,"Remote Port:",True,960,195,0,195,1980,True,0,"Tahoma",8.25,,0,0)
+Gui.frmFTP.lblRemotePort.BorderStyle(0)
+Gui.frmFTP.txtRemotePort.Create(TextBox,"",True,4305,300,0,1590,1920,True,0,"Tahoma",8.25,,1)
+Gui.frmFTP.lblRemoteFile.Create(Label,"Remote File: ",True,945,195,0,195,1560,True,0,"Tahoma",8.25,,0,0)
+Gui.frmFTP.lblRemoteFile.BorderStyle(0)
+Gui.frmFTP.txtRemoteFile.Create(TextBox,"",True,4305,300,0,1590,1500,True,0,"Tahoma",8.25,,1)
+Gui.frmFTP.cmdTstCon.Create(Button)
+Gui.frmFTP.cmdTstCon.Enabled(True)
+Gui.frmFTP.cmdTstCon.Visible(True)
+Gui.frmFTP.cmdTstCon.Zorder(0)
+Gui.frmFTP.cmdTstCon.Size(1665,375)
+Gui.frmFTP.cmdTstCon.Position(6150,810)
+Gui.frmFTP.cmdTstCon.Caption("Test Connection")
+Gui.frmFTP.cmdTstCon.FontName("Tahoma")
+Gui.frmFTP.cmdTstCon.FontSize(8.25)
+Gui.frmFTP.cmdTstCon.Event(Click,cmdTstCon_Click)
+Gui.frmFTP.lblPassword.Create(Label,"Password:",True,750,195,0,195,1140,True,0,"Tahoma",8.25,,0,0)
+Gui.frmFTP.lblPassword.BorderStyle(0)
+Gui.frmFTP.cmdSaveSettings.Create(Button)
+Gui.frmFTP.cmdSaveSettings.Enabled(True)
+Gui.frmFTP.cmdSaveSettings.Visible(True)
+Gui.frmFTP.cmdSaveSettings.Zorder(0)
+Gui.frmFTP.cmdSaveSettings.Size(1665,375)
+Gui.frmFTP.cmdSaveSettings.Position(6150,1650)
+Gui.frmFTP.cmdSaveSettings.Caption("Save Settings")
+Gui.frmFTP.cmdSaveSettings.FontName("Tahoma")
+Gui.frmFTP.cmdSaveSettings.FontSize(8.25)
+Gui.frmFTP.cmdSaveSettings.Event(Click,cmdSaveSettings_Click)
+Gui.frmFTP.lblRemoteHost.Create(Label,"Remote Host:",True,990,195,0,195,300,True,0,"Tahoma",8.25,,0,0)
+Gui.frmFTP.lblRemoteHost.BorderStyle(0)
+Program.Sub.ScreenSU.End
+
+Program.Sub.Preflight.Start
+V.Global.bConOpen.Declare(Boolean, False)
+Program.Sub.Preflight.End
+
+Program.Sub.Main.Start
+'Brandon Medina 
+'Customer: Maryland Correctional Enterprises
+'Quote: 13575
+'Desc: FMIS Integration. This simply maintains their FTP credentials to upload to the FMIS server 
+
+F.Intrinsic.Control.Try
+
+	F.Intrinsic.Control.CallSub(loadSettings) 
+	Gui.frmFTP..Show
+
+F.Intrinsic.Control.Catch
+	F.Intrinsic.Control.CallSub(ErrorMsg, CurrentSub, v.Ambient.CurrentSubroutine)
+F.Intrinsic.Control.EndTry
+Program.Sub.Main.End
+
+Program.Sub.ErrorMsg.Start
+V.Local.sError.Declare
+
+F.Intrinsic.Control.If(V.Global.bConOpen)
+	F.ODBC.Connection!con.Close
+F.Intrinsic.Control.EndIf	
+
+'Generic Error message.
+f.Intrinsic.String.Build("Project GCG_6891_FTP_Cred_Maint.g2u {0}{0}Subroutine: {1}{0}Error: {2} with Description: {3}", v.Ambient.NewLine, v.Args.CurrentSub, v.Ambient.ErrorNumber, v.Ambient.ErrorDescription, v.Local.sError)
+f.Intrinsic.UI.Msgbox(v.Local.sError)
+Program.Sub.ErrorMsg.End
+Program.Sub.loadSettings.Start
+F.Intrinsic.Control.Try
+	V.Local.bExists.Declare
+	V.Local.sSQL.Declare
+	V.Local.baValue.Declare(ByteArray)
+	V.Local.sTemp.Declare(String)
+	
+	'REMOTEHOST, REMOTEUSER, REMOTEPASSWORD, REMOTEPORT, REMOTEPATH
+	'Check Table exists and create if not 
+	F.ODBC.Connection!con.OpenCommonConnection
+	V.Global.bConOpen.Set(True)
+	F.ODBC.Connection!con.TableExists("GCG_6891_SETTINGS", V.Local.bExists)
+	F.Intrinsic.Control.If(V.Local.bExists.Not)
+		F.ODBC.Connection!con.Execute("create table GCG_6891_SETTINGS (REMOTEHOST CHAR(60), REMOTEUSER CHAR(50), REMOTEPASSWORD CHAR(50), REMOTEPORT CHAR(10), REMOTEPATH CHAR(90));")
+	F.Intrinsic.Control.EndIf
+	
+	'Grab credential records from db table, and set screen txt controls 
+	F.Data.DataTable.CreateFromSQL("dtFTPSettings", "con", "select * from GCG_6891_SETTINGS")
+	F.ODBC.Connection!con.Close
+	V.Global.bConOpen.Set(False)
+	
+	F.Intrinsic.Control.If(V.DataTable.dtFTPSettings.RowCount, =, 0)
+		F.Intrinsic.Control.ExitSub
+	F.Intrinsic.Control.ElseIf(V.DataTable.dtFTPSettings.RowCount, >, 1)
+		F.Intrinsic.UI.Msgbox("Multiple Settings found. Please contact Global Shop for assistance.")
+		F.Intrinsic.Control.ExitSub
+	F.Intrinsic.Control.EndIf
+
+	V.Local.sTemp.Set(V.DataTable.dtFTPSettings(0).REMOTEHOST!FieldValTrim)
+	F.Intrinsic.String.ConvertString2BA(V.DataTable.dtFTPSettings(0).REMOTEHOST!FieldValTrim, V.Local.baValue)
+	F.Global.Encryption.Decrypt(V.Local.baValue, V.Local.sTemp)
+	Gui.frmFTP.txtRemoteHost.Text(V.Local.sTemp)
+	
+	V.Local.sTemp.Set(V.DataTable.dtFTPSettings(0).REMOTEUSER!FieldValTrim)
+	F.Intrinsic.String.ConvertString2BA(V.Local.sTemp, V.Local.baValue)
+	F.Global.Encryption.Decrypt(V.Local.baValue, V.Local.sTemp)
+	Gui.frmFTP.txtUser.Text(V.Local.sTemp)
+	
+	V.Local.sTemp.Set(V.DataTable.dtFTPSettings(0).REMOTEPASSWORD!FieldValTrim)
+	F.Intrinsic.String.ConvertString2BA(V.Local.sTemp, V.Local.baValue)
+	F.Global.Encryption.Decrypt(V.Local.baValue, V.Local.sTemp)
+	Gui.frmFTP.txtPassword.Text(V.Local.sTemp)
+	
+	V.Local.sTemp.Set(V.DataTable.dtFTPSettings(0).REMOTEPORT!FieldValTrim)
+	F.Intrinsic.String.ConvertString2BA(V.Local.sTemp, V.Local.baValue)
+	F.Global.Encryption.Decrypt(V.Local.baValue, V.Local.sTemp)
+	Gui.frmFTP.txtRemotePort.Text(V.Local.sTemp)
+	
+	V.Local.sTemp.Set(V.DataTable.dtFTPSettings(0).REMOTEPATH!FieldValTrim)
+	F.Intrinsic.String.ConvertString2BA(V.Local.sTemp, V.Local.baValue)
+	F.Global.Encryption.Decrypt(V.Local.baValue, V.Local.sTemp)
+	gui.frmFTP.txtRemoteFile.Text(V.Local.sTemp)
+	
+	F.Data.DataTable.Close("dtFTPSettings")
+	
+F.Intrinsic.Control.Catch
+	F.Intrinsic.Control.CallSub(ErrorMsg, CurrentSub, v.Ambient.CurrentSubroutine)
+F.Intrinsic.Control.EndTry
+Program.Sub.loadSettings.End
+Program.Sub.frmFTP_UnLoad.Start
+F.Intrinsic.Control.Try
+	F.Intrinsic.Control.End
+	F.Intrinsic.Control.ExitSub
+F.Intrinsic.Control.Catch
+	F.Intrinsic.Control.CallSub(ErrorMsg, CurrentSub, v.Ambient.CurrentSubroutine)
+F.Intrinsic.Control.EndTry
+Program.Sub.frmFTP_UnLoad.End
+Program.Sub.cmdTstCon_Click.Start
+	V.Local.sRemoteHost.Declare
+	V.Local.sRemoteUser.Declare
+	V.Local.sRemotePassword.Declare
+	V.Local.sRemotePort.Declare
+	V.Local.sRemotePath.Declare
+	V.Local.sSQL.Declare
+	V.Local.bConnected.Declare
+	
+	'Set variables 
+	V.Local.sRemoteHost.Set(V.Screen.frmFTP!txtRemoteHost.Text)
+	V.Local.sRemoteUser.Set(V.Screen.frmFTP!txtUser.Text)
+	V.Local.sRemotePassword.Set(V.Screen.frmFTP!txtPassword.Text)
+	V.Local.sRemotePort.Set(V.Screen.frmFTP!txtRemotePort.Text)
+	V.Local.sRemotePath.Set(V.Screen.frmFTP!txtRemoteFile.Text)
+	'
+	F.Intrinsic.Control.Try
+		'Credentials 
+		F.Communication.FTPS.ReadProperty("connected", V.Local.bConnected)
+		F.Intrinsic.Control.If(V.Local.bConnected.Not)
+			F.Communication.FTPS.SetProperty("remoteHost", V.Local.sRemoteHost.Trim)
+			F.Communication.FTPS.SetProperty("User", V.Local.sRemoteUser.Trim)
+			F.Communication.FTPS.SetProperty("Password", V.Local.sRemotePassword.Trim)
+			F.Communication.FTPS.SetProperty("remotePort", V.Local.sRemotePort.Trim)
+			F.Communication.FTPS.Logon
+		F.Intrinsic.Control.EndIf
+	
+		F.Intrinsic.UI.Msgbox("Successful")
+		
+		F.Communication.FTPS.Logoff
+		
+	F.Intrinsic.Control.Catch
+		F.Communication.FTPS.Logoff
+		F.Intrinsic.UI.Msgbox("Connection Failed")
+		F.Intrinsic.Control.CallSub(ErrorMsg, CurrentSub, v.Ambient.CurrentSubroutine)
+		F.Intrinsic.Control.ExitSub
+	F.Intrinsic.Control.EndTry
+	
+	
+	F.Intrinsic.Control.ExitSub
+Program.Sub.cmdTstCon_Click.End
+Program.Sub.cmdSaveSettings_Click.Start
+F.Intrinsic.Control.Try
+	V.Local.sTemp.Declare(String)
+	V.Local.sRemoteHost.Declare
+	V.Local.sRemoteUser.Declare
+	V.Local.sRemotePassword.Declare
+	V.Local.sRemotePort.Declare
+	V.Local.sRemotePath.Declare
+	V.Local.sSQL.Declare
+	V.Local.sWeek.Declare
+	V.Local.sMonth.Declare
+	V.Local.iSize.Declare
+	V.Local.baValue.Declare(ByteArray)
+	
+	
+	'Save screen credentials to variables
+	V.Local.sTemp.Set(V.Screen.frmFTP!txtRemoteHost.Text)
+	F.Intrinsic.Control.If(V.Local.sTemp.Trim,<>,"")
+		F.Intrinsic.Math.Add(V.Local.sTemp.Length,1,V.Local.iSize)
+		F.Intrinsic.String.RPad(V.Local.sTemp.Trim," ",V.Local.iSize,V.Local.sTemp)
+		F.Global.Encryption.Encrypt(V.Local.sTemp,V.Local.baValue)
+		F.Intrinsic.String.ConvertBA2String(V.Local.baValue,V.Local.sTemp)
+	F.Intrinsic.Control.EndIf
+	V.Local.sRemoteHost.Set(V.Local.sTemp)
+	
+	V.Local.sTemp.Set(V.Screen.frmFTP!txtUser.Text)
+	F.Intrinsic.Control.If(V.Local.sTemp.Trim,<>,"")
+		F.Intrinsic.Math.Add(V.Local.sTemp.Length,1,V.Local.iSize)
+		F.Intrinsic.String.RPad(V.Local.sTemp.Trim," ",V.Local.iSize,V.Local.sTemp)
+		F.Global.Encryption.Encrypt(V.Local.sTemp,V.Local.baValue)
+		F.Intrinsic.String.ConvertBA2String(V.Local.baValue,V.Local.sTemp)
+	F.Intrinsic.Control.EndIf
+	V.Local.sRemoteUser.Set(V.Local.sTemp)
+
+	V.Local.sTemp.Set(V.Screen.frmFTP!txtPassword.Text)
+	F.Intrinsic.Control.If(V.Local.sTemp.Trim,<>,"")
+		F.Intrinsic.Math.Add(V.Local.sTemp.Length,1,V.Local.iSize)
+		F.Intrinsic.String.RPad(V.Local.sTemp.Trim," ",V.Local.iSize,V.Local.sTemp)
+		F.Global.Encryption.Encrypt(V.Local.sTemp,V.Local.baValue)
+		F.Intrinsic.String.ConvertBA2String(V.Local.baValue,V.Local.sTemp)
+	F.Intrinsic.Control.EndIf
+	V.Local.sRemotePassword.Set(V.Local.sTemp)
+	
+	V.Local.sTemp.Set(V.Screen.frmFTP!txtRemotePort.Text)
+	F.Intrinsic.Control.If(V.Local.sTemp.Trim,<>,"")
+		F.Intrinsic.Math.Add(V.Local.sTemp.Length,1,V.Local.iSize)
+		F.Intrinsic.String.RPad(V.Local.sTemp.Trim," ",V.Local.iSize,V.Local.sTemp)
+		F.Global.Encryption.Encrypt(V.Local.sTemp,V.Local.baValue)
+		F.Intrinsic.String.ConvertBA2String(V.Local.baValue,V.Local.sTemp)
+	F.Intrinsic.Control.EndIf
+	V.Local.sRemotePort.Set(V.Local.sTemp)
+	
+	V.Local.sTemp.Set(V.Screen.frmFTP!txtRemoteFile.Text)
+	F.Intrinsic.Control.If(V.Local.sTemp.Trim,<>,"")
+		F.Intrinsic.Math.Add(V.Local.sTemp.Length,1,V.Local.iSize)
+		F.Intrinsic.String.RPad(V.Local.sTemp.Trim," ",V.Local.iSize,V.Local.sTemp)
+		F.Global.Encryption.Encrypt(V.Local.sTemp,V.Local.baValue)
+		F.Intrinsic.String.ConvertBA2String(V.Local.baValue,V.Local.sTemp)
+	F.Intrinsic.Control.EndIf
+	V.Local.sRemotePath.Set(V.Local.sTemp)
+
+	
+	F.ODBC.Connection!con.OpenCommonConnection
+	V.Global.bConOpen.Set(True)
+	F.Data.DataTable.CreateFromSQL("dtFTPSettings", "con", "select * from GCG_6891_SETTINGS")
+	
+	F.Intrinsic.Control.If(V.DataTable.dtFTPSettings.RowCount, <>, 0)
+		F.ODBC.Connection!con.Execute("delete from GCG_6891_SETTINGS")
+	F.Intrinsic.Control.EndIf
+	F.Intrinsic.String.Build("insert into GCG_6891_SETTINGS (REMOTEHOST, REMOTEUSER, REMOTEPASSWORD, REMOTEPORT, REMOTEPATH) values ('{0}', '{1}', '{2}', '{3}', '{4}')", V.Local.sRemoteHost, V.Local.sRemoteUser, V.Local.sRemotePassword, V.Local.sRemotePort, V.Local.sRemotePath, V.Local.sSQL)
+	F.ODBC.Connection!con.Execute(V.Local.sSQL)
+	
+	F.Data.DataTable.Close("dtFTPSettings")
+	F.ODBC.Connection!con.Close
+	V.Global.bConOpen.Set(False)
+	
+	F.Intrinsic.UI.Msgbox("Save Complete")
+	
+	F.Intrinsic.Control.ExitSub
+F.Intrinsic.Control.Catch
+	F.Intrinsic.Control.CallSub(ErrorMsg, CurrentSub, V.Ambient.CurrentSubroutine)
+F.Intrinsic.Control.EndTry
+Program.Sub.cmdSaveSettings_Click.End
+
+Program.Sub.Comments.Start
+${$5$}$20.1.8286.22461$}$1
+${$6$}$bmedina$}$20221012132927796$}$kOipCrsyLBVj2KoSwkcdK23ChxGVcBlEyRHH04QL22MM8Hlo7w20b2tVBuNqlcynf9tXr44Qn/c=
+Program.Sub.Comments.End
